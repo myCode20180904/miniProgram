@@ -78,6 +78,7 @@ cc.Class({
                   
               }
             console.info(JSON.stringify(this.gameinfo));
+            g_define.saveFile("",JSON.stringify(this.gameinfo));
         }, this);
 
     },

@@ -118,6 +118,10 @@ var color2string = function(color){
 
 }
 
+var saveFile = function(name,data){
+
+
+}
 
 //游戏配置
 if(typeof gameConfig == "undefined"){
@@ -130,5 +134,6 @@ module.exports = {
     pointColor:pointColor,
     string2color:string2color,
     color2string:color2string,
-    gameConfig:gameConfig
+    gameConfig:gameConfig,
+    saveFile:saveFile
 };
