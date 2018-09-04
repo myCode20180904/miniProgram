@@ -12,7 +12,7 @@ $ git push -u origin master
 
 以后每次对 master 做出改动，就运行
 $ git push origin master
-
+$git fetch origin master: myCode20180904/miniProgram
 
 ★★★★★ 克隆仓库
 & git clone link
