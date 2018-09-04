@@ -25,6 +25,7 @@ $git fetch git@github.com:myCode20180904/miniProgram master
 & git clone link
 ```
 - - -  
+- - -
 
 # 一级标题markdown
 ## 二级标题
@@ -38,8 +39,9 @@ $git fetch git@github.com:myCode20180904/miniProgram master
 >另外
 1. 有序列表
 - 1. 是的
->表格
 
+>表格
+ 
 |  name  |    age    |   sex   |
 |:--------:|:--------:|:-------:|
 |  name  |    age    |   sex   |
