@@ -13,3 +13,5 @@ $ git push git@github.com:myCode20180904/miniProgram master
 $git fetch git@github.com:myCode20180904/miniProgram master
 ★★★★★ 克隆仓库
 & git clone link
+
+
