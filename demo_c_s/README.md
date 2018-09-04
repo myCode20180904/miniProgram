@@ -6,7 +6,6 @@
 #腾讯云小程序游戏范例
 ./qcloud/client  
 #腾讯云小程序服务端使用范例
-
 ./qcloud/server  
 
 ```
