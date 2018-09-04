@@ -6,13 +6,13 @@ $ git remote add origin git@github.com:myCode20180904/miniProgram
 remote：远程 origin：本地
 
 
-git pull git@github.com:myCode20180904/miniProgram
+$ git pull git@github.com:myCode20180904/miniProgram
 ★ 接下来就可以把本地仓库推送到远程仓库中了
-git push -u origin master
+$ git push -u origin master
 
 以后每次对 master 做出改动，就运行
-git push origin master
+$ git push origin master
 
 
 ★★★★★ 克隆仓库
-git clone link
+& git clone link
