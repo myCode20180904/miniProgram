@@ -9,6 +9,7 @@ var common = {
 
     },
     isLogin:false,
+    tunnelStatus:0,
     //微信小程序屏幕
     screenWidth:0,
     screenHeight:0,

@@ -88,6 +88,17 @@ function onMessage (tunnelId, type, content) {
             }
             break
 
+        case 'speak':
+        if (tunnelId in userMap) {
+            $broadcast('speak', {
+                'word': content.word,
+                'who': content.who.name
+            })
+        } else {
+            $close(tunnelId)
+        }
+        break
+
         default:
             break
     }

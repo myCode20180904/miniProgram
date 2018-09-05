@@ -3,6 +3,7 @@ var plat = require('./plat/platScript')
 var myToast = require('./public/myToast')
 var config = require('./public/config')
 var g_define = require('./public/g_define')
+var qcloud = require('./plat/qcloud')
 
 cc.Class({
     extends: cc.Component,
@@ -41,9 +42,30 @@ cc.Class({
             success:function(){
                 myToast.show(1,"登陆成功");
                 that.updateUI();
+
+                //开始一个信道
+                qcloud.start({success:function(){}});
+                that.schedule(that.dealTunnel, 0.1);
+
+              
+            
+
             }
         });
 
+    },
+
+    //处理消息范例
+    dealTunnel:function(){
+        if(dataScript.common.tunnelStatus === 'connected'){
+            this.unschedule(this.dealTunnel);
+            
+            qcloud.revcMessage('speak', function(msg){
+                console.info('revc_speak', msg);
+            });
+
+            qcloud.sendMessage('speak', { word: "hello", who:dataScript.userInfo.skey});
+        }
     },
 
     openPage:function(event,customEventData){

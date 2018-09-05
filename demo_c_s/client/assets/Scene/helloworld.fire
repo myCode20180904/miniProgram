@@ -55,7 +55,7 @@
       "z": 0,
       "w": 1
     },
-    "_localZOrder": 47,
+    "_localZOrder": 2,
     "groupIndex": 0,
     "autoReleaseAssets": false,
     "_id": "2d2f792f-a40c-49bb-a189-ed176a246e49"
@@ -117,7 +117,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 48,
+    "_localZOrder": 3,
     "groupIndex": 0,
     "_id": "1aUJbrc+pJx4woMfpr/DcD"
   },
@@ -207,7 +207,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 49,
+    "_localZOrder": 4,
     "groupIndex": 0,
     "_id": "a286bbGknJLZpRpxROV6M94"
   },
@@ -268,7 +268,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 50,
+    "_localZOrder": 5,
     "groupIndex": 0,
     "_id": "40N1KCl3xGz6HEDyCpwwOX"
   },
@@ -354,7 +354,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 51,
+    "_localZOrder": 6,
     "groupIndex": 0,
     "_id": "e2e0crkOLxGrpMxpbC4iQg1"
   },
@@ -470,7 +470,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 52,
+    "_localZOrder": 7,
     "groupIndex": 0,
     "_id": "c4f30YOS65G64U2TwufdJ+2"
   },
@@ -559,7 +559,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 53,
+    "_localZOrder": 8,
     "groupIndex": 0,
     "_id": "31f1bH7V69Ajr1iXhluMpTB"
   },
@@ -648,7 +648,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 54,
+    "_localZOrder": 9,
     "groupIndex": 0,
     "_id": "a2eMG5H1VExotaXQhSgwT1"
   },
@@ -716,7 +716,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 55,
+    "_localZOrder": 10,
     "groupIndex": 0,
     "_id": "8elUFFSVFG0Zh0+PEYiTGn"
   },
@@ -777,7 +777,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 56,
+    "_localZOrder": 11,
     "groupIndex": 0,
     "_id": "e33SuX8dFL3rCGHd9DOxS6"
   },
@@ -976,7 +976,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 57,
+    "_localZOrder": 12,
     "groupIndex": 0,
     "_id": "e0hzODaTZKYrK/bNnCp2Tm"
   },
@@ -1037,7 +1037,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 58,
+    "_localZOrder": 13,
     "groupIndex": 0,
     "_id": "90nLHkrPVC6Z1JRYQ5kG6C"
   },
