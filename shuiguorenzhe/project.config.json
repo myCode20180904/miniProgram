@@ -1,0 +1,37 @@
+{
+	"description": "项目配置文件。",
+	"client": "./client/build/wechatgame",
+	"svr": "./server",
+	"miniprogramRoot": "./client/build/wechatgame",
+	"qcloudRoot": "./server",
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "game",
+	"libVersion": "game",
+	"appid": "wxfdd206c03b158c68",
+	"projectname": "sgrz",
+	"isGameTourist": true,
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": [],
+			"current": -1
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": []
+		}
+	}
+}
