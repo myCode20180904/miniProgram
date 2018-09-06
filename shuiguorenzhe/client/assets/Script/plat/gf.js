@@ -9,7 +9,7 @@ var login = function(obj){
 }
 
 var loginSuccess = function(obj){
-    obj.success({msg:"gf   loginSuccess",data:{nickName:"zhhh"}});
+    obj.success({});
 }
 
 

@@ -44,8 +44,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.38230884557721134,
-      "y": 0.38230884557721134,
+      "x": 0.45150394102628183,
+      "y": 0.45150394102628183,
       "z": 1
     },
     "_quat": {
@@ -55,7 +55,7 @@
       "z": 0,
       "w": 1
     },
-    "_localZOrder": 17,
+    "_localZOrder": 77,
     "groupIndex": 0,
     "autoReleaseAssets": false,
     "_id": "2d2f792f-a40c-49bb-a189-ed176a246e49"
@@ -117,7 +117,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 18,
+    "_localZOrder": 78,
     "groupIndex": 0,
     "_id": "1aUJbrc+pJx4woMfpr/DcD"
   },
@@ -207,7 +207,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 19,
+    "_localZOrder": 79,
     "groupIndex": 0,
     "_id": "a286bbGknJLZpRpxROV6M94"
   },
@@ -268,7 +268,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 20,
+    "_localZOrder": 80,
     "groupIndex": 0,
     "_id": "40N1KCl3xGz6HEDyCpwwOX"
   },
@@ -354,7 +354,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 21,
+    "_localZOrder": 81,
     "groupIndex": 0,
     "_id": "e2e0crkOLxGrpMxpbC4iQg1"
   },
@@ -470,7 +470,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 22,
+    "_localZOrder": 82,
     "groupIndex": 0,
     "_id": "c4f30YOS65G64U2TwufdJ+2"
   },
@@ -559,7 +559,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 23,
+    "_localZOrder": 83,
     "groupIndex": 0,
     "_id": "31f1bH7V69Ajr1iXhluMpTB"
   },
@@ -648,7 +648,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 24,
+    "_localZOrder": 84,
     "groupIndex": 0,
     "_id": "a2eMG5H1VExotaXQhSgwT1"
   },
@@ -716,7 +716,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 25,
+    "_localZOrder": 85,
     "groupIndex": 0,
     "_id": "8elUFFSVFG0Zh0+PEYiTGn"
   },
@@ -777,7 +777,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 26,
+    "_localZOrder": 86,
     "groupIndex": 0,
     "_id": "e33SuX8dFL3rCGHd9DOxS6"
   },
@@ -976,7 +976,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 27,
+    "_localZOrder": 87,
     "groupIndex": 0,
     "_id": "e0hzODaTZKYrK/bNnCp2Tm"
   },
@@ -1037,7 +1037,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 28,
+    "_localZOrder": 88,
     "groupIndex": 0,
     "_id": "90nLHkrPVC6Z1JRYQ5kG6C"
   },

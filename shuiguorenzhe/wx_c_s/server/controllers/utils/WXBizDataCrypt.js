@@ -9,10 +9,6 @@ var decryptData = function (encryptedData, iv,skey) {
   iv = new Buffer(iv, 'base64')
 
   try {
-    
-    console.info(encryptedData);
-    console.info(iv);
-    console.info(sessionKey);
       // 解密
     var decipher = crypto.createDecipheriv('aes-128-cbc', sessionKey, iv)
     // 设置自动 padding 为 true，删除填充补位

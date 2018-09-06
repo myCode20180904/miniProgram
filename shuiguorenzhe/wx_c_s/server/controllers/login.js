@@ -1,60 +1,81 @@
-const dataScript = require('./dataScript/dataScript')
+// const dataScript = require('./dataScript/dataScript')
 var https = require('https');
-const WXBizDataCrypt = require('./utils/WXBizDataCrypt')
-const mysql = require("../qcloud").mysql
+// const mysql = require("../qcloud").mysql
 const config = require('../config')
+// const util = require('./utils/util')
 
 // 登录授权接口
-async function post (ctx, next) {
+async function get (ctx, next) {
      // 具体查看：
      console.log(ctx.request.body);
 
-     let returnStr = {};
-     let param={};
+     if (ctx.state.$wxInfo.loginState) {
+        ctx.state.data = ctx.state.$wxInfo.userinfo
+        console.info(ctx.state.data);
+    }
+    // //
+
+    //  let returnStr = {};
+    //  let param={};
  
-     if (ctx.request.method == "POST") {
-         param = ctx.request.body;
-     } else{
-         param = ctx.request.query || ctx.request.params; 
-     }
-     
-     // console.info(param);
-     if(param){
-         let sql_result=0;
-         if(param.code == "1234567890"){
-                 //select
-            sql_result = await mysql.column('*').select().from('users');
-            console.log(sql_result);
-            returnStr.data = { 
+    //  if (ctx.request.method == "POST") {
+    //      param = ctx.request.body;
+    //  } else{
+    //      param = ctx.request.query || ctx.request.params; 
+    //  }
+
+    //  // console.info(param);
+    //  if(param){
+    //      if(param.code == "1234567890"){
+    //          //select
+    //         await mysql
+    //         .column('session_key','user_info')
+    //         .select()
+    //         .from('cSessionInfo')
+    //         .limit('1')
+    //         .then(res => {
+    //             ctx.state.userinfo = res;
+    //         });
+
+    //         console.info(ctx.state.userinfo[0].session_key);
+    //         console.info(ctx.state.userinfo[0].user_info);
+    //         let userinfo = JSON.parse(ctx.state.userinfo[0].user_info);
+    //         returnStr.data ={ 
+    //             openid:userinfo.openId,
+    //             session_key:ctx.state.userinfo[0].session_key,
+    //             nickName:userinfo.nickName,
+    //             avatarUrl:userinfo.avatarUrl,
+    //             gender:userinfo.gender
                 
-            };
-            returnStr.err=0;
-            returnStr.msg = 'test user';
-            ctx.body = returnStr;
-             return;
-         }
+    //         };
+          
+    //         returnStr.err=0;
+    //         returnStr.msg = 'test user';
+    //         ctx.body = returnStr;
+    //          return;
+    //      }
 
-        var token = await authorization_code(param);
+    //     var token = await authorization_code(param);
 
-        if(JSON.parse(token).errcode){
-            returnStr.data = JSON.parse(token);
-            returnStr.err=1;
-            returnStr.msg = 'token error ';
-        }else{
-            returnStr.data = JSON.parse(token);
-            returnStr.err=0;
-            returnStr.msg = 'sucess';
-        }
+    //     if(JSON.parse(token).errcode){
+    //         returnStr.data = JSON.parse(token);
+    //         returnStr.err=1;
+    //         returnStr.msg = 'token error ';
+    //     }else{
+    //         returnStr.data = JSON.parse(token);
+    //         returnStr.err=0;
+    //         returnStr.msg = 'sucess';
+    //     }
 
         
-        ctx.body = returnStr;
+    //     ctx.body = returnStr;
 
-     }else{
-         returnStr.data = { };
-         returnStr.err=1;
-         returnStr.msg = 'param:error ';
-         ctx.body = returnStr;
-     }
+    //  }else{
+    //      returnStr.data = { };
+    //      returnStr.err=1;
+    //      returnStr.msg = 'param:error ';
+    //      ctx.body = returnStr;
+    //  }
      
 
 }
@@ -79,5 +100,5 @@ var authorization_code = function(param){
 }
 
 module.exports = {
-    post
+    get
 }

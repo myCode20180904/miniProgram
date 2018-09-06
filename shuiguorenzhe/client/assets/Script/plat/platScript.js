@@ -29,6 +29,7 @@ var loginSuccess = function(obj){
     }
 }
 
+
 var request = function(obj){
     if(window.wx){
         weixin.request(obj);

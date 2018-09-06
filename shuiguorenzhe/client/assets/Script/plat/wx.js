@@ -1,5 +1,6 @@
 var dataScript = require('../model/dataScript')
 var WXBizDataCrypt = require('../utils/WXBizDataCrypt');
+var qcloud = require('./qcloud')
 
 var wxStart = function(obj){
      //获取启动参数
@@ -105,15 +106,25 @@ var wxStart = function(obj){
 }
 
 var login = function(obj){
-    wx.login({
+    qcloud.start({});
+    qcloud.login({
         success: function (res) {
             obj.success(res);
         },
         fail:function(){
             obj.fail();
-        },
-        complete:function(){}
-    })
+        }
+    });
+    // qcloud.startAtunnel({});
+    // wx.login({
+    //     success: function (res) {
+    //         obj.success(res);
+    //     },
+    //     fail:function(){
+    //         obj.fail();
+    //     },
+    //     complete:function(){}
+    // })
 }
 
 var loginSuccess = function(obj){
@@ -122,6 +133,7 @@ var loginSuccess = function(obj){
 
 var getUserInfo=function(obj){
     wx.getUserInfo({
+        openIdList:obj.openIdList,
         success: function(res){
             console.info(res);
             var _data={

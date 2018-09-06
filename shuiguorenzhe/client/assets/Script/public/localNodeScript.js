@@ -42,13 +42,8 @@ cc.Class({
             plat.login({
                 success:function(res){
                     console.info(res);
-                    if(!res.code){
-                        myToast.show(1,"用户授权失败！");
-                        return;
-                    }else{
-                        dataScript.userInfo.code = res.code;
-                        that.serverLogin(res.code);
-                    }
+                    console.info(dataScript.userInfo);
+                    
                 },
                 fail:function(){
                     console.info("fail");
@@ -93,7 +88,12 @@ cc.Class({
     loginSuccees:function(){
         console.info("loginSuccees");
         var that = this;
+        let openIdArr = new Array();
+        if(dataScript.userInfo.openid){
+            openIdArr.push(dataScript.userInfo.openid);
+        }
         plat.loginSuccess({
+            openIdList:openIdArr,
             success:function(res){
                 console.info(res);
                 console.info("成功获取用户信息")
@@ -121,6 +121,24 @@ cc.Class({
             dataScript.userInfo.name = res.data.nickName;
             dataScript.userInfo.avatarUrl = res.data.avatarUrl;
             dataScript.userInfo.sex = res.data.gender;
+        }
+        if(res.encryptedData){
+            var that = this;
+            plat.request({
+                url:config.service.apiUrl+"/updateUserInfo",
+                data:{
+                    encryptedData:res.encryptedData,
+                    iv:res.iv,
+                    skey:res.skey
+                },
+                success:function(res){
+                    console.info(res)
+                    console.info("同步用户信息")
+                },
+                fail:function(err){
+
+                }
+            })
         }
     }
 

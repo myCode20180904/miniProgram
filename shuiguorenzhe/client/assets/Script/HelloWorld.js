@@ -44,8 +44,7 @@ cc.Class({
                 that.updateUI();
 
                 if(window.wx){
-                    //开始一个信道
-                    qcloud.start({success:function(){}});
+                    qcloud.startAtunnel({});
                     that.schedule(that.dealTunnel, 0.1);
                 }
 
@@ -89,6 +88,7 @@ cc.Class({
 
     updateUI:function(){
         this.label.string = dataScript.userInfo.name;
+        g_define.loadHttpIcon(this.node.getChildByName('cocos'),dataScript.userInfo.avatarUrl);
     },
 
     // called every frame

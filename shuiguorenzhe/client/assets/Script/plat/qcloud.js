@@ -6,8 +6,6 @@ var tunnel = 0;
 var start = function(obj){
     // 设置登录地址
     wafer2sdk.setLoginUrl(config.service.apiUrl+"/login");
-    
-    startAtunnel(obj);
 
     console.info("-------------qcloud start-------------------");
 }

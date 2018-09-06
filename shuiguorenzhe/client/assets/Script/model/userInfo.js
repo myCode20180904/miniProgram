@@ -2,6 +2,8 @@
 var userInfo = {
     openid:0,
     code:0,
+    encryptedData:0,
+    iv:0,
     skey:0,
     name:0,
     avatarUrl:0,
