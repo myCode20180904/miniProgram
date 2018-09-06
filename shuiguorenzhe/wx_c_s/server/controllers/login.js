@@ -2,6 +2,7 @@ const dataScript = require('./dataScript/dataScript')
 var https = require('https');
 const WXBizDataCrypt = require('./utils/WXBizDataCrypt')
 const mysql = require("../qcloud").mysql
+const config = require('../config')
 
 // 登录授权接口
 async function post (ctx, next) {
@@ -22,7 +23,7 @@ async function post (ctx, next) {
          let sql_result=0;
          if(param.code == "1234567890"){
                  //select
-            sql_result = await mysql.column('*').select().from('cSessionInfo');
+            sql_result = await mysql.column('*').select().from('users');
             console.log(sql_result);
             returnStr.data = { 
                 
@@ -61,7 +62,7 @@ async function post (ctx, next) {
 var authorization_code = function(param){
     return  new Promise(function (resolve, reject) {
                 //GET https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
-        let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${dataScript.common.appId}&secret=${dataScript.common.AppSecret}&js_code=${param.code}&grant_type=authorization_code`;
+        let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${config.appId}&secret=${config.appSecret}&js_code=${param.code}&grant_type=authorization_code`;
         https.get(url, (resp) => {
            var data="";
             resp.on('data', (chunk) => {

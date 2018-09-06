@@ -1,8 +1,8 @@
 {
 	"description": "项目配置文件。",
-	"client": "./client/build/wechatgame",
+	"client": "./wxclient",
 	"svr": "./server",
-	"miniprogramRoot": "./client/build/wechatgame",
+	"miniprogramRoot": "./wxclient",
 	"qcloudRoot": "./server",
 	"setting": {
 		"urlCheck": true,
@@ -14,7 +14,7 @@
 	"compileType": "game",
 	"libVersion": "game",
 	"appid": "wxfdd206c03b158c68",
-	"projectname": "sgrz",
+	"projectname": "wx_c_s",
 	"isGameTourist": true,
 	"condition": {
 		"search": {

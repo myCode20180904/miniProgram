@@ -6,7 +6,7 @@ const CONF = {
     appId: 'wxfdd206c03b158c68',
 
     // 微信小游戏 App Secret
-    appSecret: '',
+    appSecret: '7f74f963c32f8970480bc771a3c99dc0',
 
     // 是否使用腾讯云代理登录小游戏
     useQcloudLogin: true,
