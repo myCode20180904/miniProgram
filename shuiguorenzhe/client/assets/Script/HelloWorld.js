@@ -82,6 +82,9 @@ cc.Class({
                 console.info(extInfo);
             },{data:customEventData});
 
+        }else if(customEventData=="gameScene1"){
+            cc.director.loadScene("gameScene");
+
         }
 
     },
