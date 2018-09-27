@@ -7,9 +7,18 @@
 
 [小程序合集](https://github.com/myCode20180904/miniProgram)
 
+>用户配置
+```
+$ git config --global user.name "name"//你的用户名
+$ git config --global user.email email@email.com//你的邮箱
+$ ssh-keygen -t rsa -C email@email.com//你的邮箱
+
+$ git clone git@github.com:myCode20180904/miniProgram
+```
+
 > `origin = git@github.com:myCode20180904/miniProgram`
 
-> 在本地仓库下的 git bash中输入指令：
+> 在本地仓库下新建 的 git bash中输入指令：
 ```
 $ git remote add origin git@github.com:myCode20180904/miniProgram
 ```
@@ -20,10 +29,7 @@ $ git push -u git@github.com:myCode20180904/miniProgram master
 $ git push git@github.com:myCode20180904/miniProgram master
 $git fetch git@github.com:myCode20180904/miniProgram master
 ```
-> 克隆仓库
-```
-& git clone link
-```
+
 - - -  
 - - -
 
