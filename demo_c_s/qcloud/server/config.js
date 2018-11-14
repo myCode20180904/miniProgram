@@ -42,15 +42,15 @@ const CONF = {
     wxMessageToken: 'abcdefgh',
 
     // 其他配置 ...本地试调打开
-    // serverHost: 'localhost',
-    // tunnelServerUrl: '',//https://p2pnowly.qcloud.la
-    // tunnelSignatureKey: '27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89',
-    // // 腾讯云相关配置可以查看云 API 秘钥控制台：https://console.cloud.tencent.com/capi
-    // qcloudAppId: '1257126548',
-    // qcloudSecretId: 'AKIDJYs7IM98oUNICynTkyGbuCb4b8nSlpw7',
-    // qcloudSecretKey: 'vux579EOkUG61qbEh1Cwb5Z9pUl094sW',
-    // wxMessageToken: 'weixinmsgtoken',
-    // networkTimeout: 30000
+    serverHost: 'localhost',
+    tunnelServerUrl: '',//https://p2pnowly.qcloud.la
+    tunnelSignatureKey: '27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89',
+    // 腾讯云相关配置可以查看云 API 秘钥控制台：https://console.cloud.tencent.com/capi
+    qcloudAppId: '1257126548',
+    qcloudSecretId: 'AKIDJYs7IM98oUNICynTkyGbuCb4b8nSlpw7',
+    qcloudSecretKey: 'vux579EOkUG61qbEh1Cwb5Z9pUl094sW',
+    wxMessageToken: 'weixinmsgtoken',
+    networkTimeout: 30000
 }
 
 module.exports = CONF

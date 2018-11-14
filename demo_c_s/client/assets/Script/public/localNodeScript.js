@@ -1,4 +1,6 @@
 var dataScript = require('../model/dataScript')
+var COMMON = dataScript.common;
+var USERINFO = dataScript.userInfo;
 var plat = require('../plat/platScript')
 var myToast = require('./myToast')
 var config = require('./config')
@@ -13,16 +15,22 @@ cc.Class({
 
     onLoad () {
         console.info("localNode onLoad");
-       
+
     },
 
+    /**
+     * start 
+     * 声明常驻根节点
+     */
     start () {
-        console.info("localNode start");
+        console.info("声明常驻根节点");
         cc.game.addPersistRootNode(this.node);
     },
-    
+    /**
+     * 初始化
+     */
     init:function(){
-        console.info("localNode init");
+        console.info("正在准备游戏 localNode init");
 
         //初始plat
         plat.start({
@@ -33,6 +41,41 @@ cc.Class({
 
     },
 
+    /**
+     * loadRes
+     * 游戏开始是加载的资源 
+     * @param {*} obj {success:function,fail:function,...}
+     */
+    loadRes:function(obj){
+        console.info("加载游戏初始资源 localNode loadRes");
+        var that = this;
+      
+        //加载loadres目录下的资源
+        cc.loader.loadResDir("loadres", cc.SpriteFrame, function (err, assets, urls) {
+            if(err){
+                console.info(err);
+                return;
+            }
+            for (let index = 0; index < urls.length; index++) {
+                COMMON.textureRes.set(urls[index],assets[index]); 
+            }
+            that.login(obj);
+        });
+        //加载远程资源
+        COMMON.loadHttpPng("/ball.png",function(){});
+
+        
+        //静默加载字体
+        g_define.loadHttpFont({
+            url:"https://lg-3q7kbp58-1257126548.cos.ap-shanghai.myqcloud.com/fnt/HYYANKAIW.ttf",
+            path:"HYYANKAIW.ttf",
+            success:function(){
+                console.info("已加载字体:",dataScript.common.myFontList);
+            }
+        });
+        
+    },
+    
     login:function(obj){
         var that = this;
 
@@ -47,6 +90,7 @@ cc.Class({
                         return;
                     }else{
                         dataScript.userInfo.code = res.code;
+                        obj.success();
                         that.serverLogin(res.code);
                     }
                 },

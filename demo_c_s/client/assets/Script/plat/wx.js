@@ -67,7 +67,16 @@ var wxStart = function(obj){
     
         updateManager.onUpdateReady(function () {
             // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
-            updateManager.applyUpdate()
+            wx.showModal({
+                title: '更新提示',
+                content: '新版本已经准备好，是否重启应用？',
+                success: function (res) {
+                  if (res.confirm) {
+                    // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+                    updateManager.applyUpdate()
+                  }
+                }
+              })
         })
     
         updateManager.onUpdateFailed(function () {
@@ -258,7 +267,80 @@ var authorization_code = function(code){
     })
 }
 
+/**
+ * 
+ * @param {url,filePath,success:function(res),save:function(path)} obj 
+ */
+var downLoad = function(obj){
+    
+    const downloadTask = wx.downloadFile({
+        url: obj.url, //资源路径
+        //filePath:obj.path,//保存路径
+        success (res) {
+            //保存文件
+            if(obj.path){
+                const FileSystemManager = wx.getFileSystemManager();
+                const saveFile = `${wx.env.USER_DATA_PATH}/${obj.path}`;
+                const saveFilePath = saveFile.substring(0, saveFile.lastIndexOf("/"));
+                //查目录是否存在
+                FileSystemManager.access({
+                    path:saveFilePath,
+                    success:function(access_res){
+                        //保存
+                        wx.getFileSystemManager().saveFile({
+                            tempFilePath:res.tempFilePath,
+                            filePath:saveFile,
+                            success:function(res2){
+                                console.info("saveFile success",res2);
+                                obj.save(`${wx.env.USER_DATA_PATH}/${obj.path}`);
+                            },
+                            fail:function(res2){
+                                console.info("saveFile fail:",res2);
+                            }
+                        })
+                    },
+                    fail:function(access_res){
+                        //创建目录
+                        FileSystemManager.mkdir({
+                            dirPath:saveFilePath,
+                            recursive:true,
+                            success:function(mkdir_res){
+                                console.info("mkdir success:",mkdir_res);
+                                //保存
+                                wx.getFileSystemManager().saveFile({
+                                    tempFilePath:res.tempFilePath,
+                                    filePath:saveFile,
+                                    success:function(res2){
+                                        console.info("saveFile success",res2);
+                                        obj.save(saveFile);
+                                    },
+                                    fail:function(res2){
+                                        console.info("saveFile fail:",res2);
+                                    }
+                                })
+                            },
+                            fail:function(mkdir_res){
+                                console.info("mkdir fail:",mkdir_res);
+                            }
+                        });
+                    }
+                })
+                
+            }
+            obj.success(res);
+        },
+        fail:function(res){
+            console.info("wx downLoad fail:",res);
+        }
+    })
 
+    // downloadTask.onProgressUpdate((res) => {
+    //     console.log('下载进度', res.progress)
+    //     console.log('已经下载的数据长度', res.totalBytesWritten)
+    //     console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)
+    // })
+    return downloadTask;
+}
 
 module.exports = {
     start:wxStart,
@@ -266,6 +348,7 @@ module.exports = {
     loginSuccess:loginSuccess,
     request:request,
     changeBannerAd:changeBannerAd,
-    bannerAd:bannerAd
+    bannerAd:bannerAd,
+    downLoad:downLoad
 
 };

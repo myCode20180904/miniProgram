@@ -79,11 +79,17 @@ var changeBannerAd = function(obj){
     // console.info(obj);
 }
 
+var downLoad = function(obj){
+    
+    console.info("downLoad",obj);
+}
+
 module.exports = {
     start:gfStart,
     login:login,
     loginSuccess:loginSuccess,
     request:request,
     changeBannerAd:changeBannerAd,
-    bannerAd:bannerAd
+    bannerAd:bannerAd,
+    downLoad:downLoad
 };

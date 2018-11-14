@@ -17,7 +17,8 @@ var config = {
     service: {
         host,
         apiUrl:`${host}/weapp`,
-        imgUrl:`${host}/uploads/game_img/`
+        imgUrl:`https://lg-3q7kbp58-1257126548.cos.ap-shanghai.myqcloud.com/images/test`,
+        downLoadUrl:`https://lg-3q7kbp58-1257126548.cos.ap-shanghai.myqcloud.com/download/`
 
     }
 };

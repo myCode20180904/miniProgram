@@ -1,6 +1,14 @@
 var weixin = require('./wx')
 var gf = require('./gf')
 
+var getPlatType = function(){
+    if(window.wx){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
 var start = function(obj){
     if(window.wx){
         weixin.start(obj);
@@ -55,11 +63,20 @@ var bannerAd = function(){
 }
 
 
+var downLoad = function(obj){
+    if(window.wx){
+        return weixin.downLoad(obj);
+    }else{
+        return gf.downLoad(obj);
+    }
+}
+
 module.exports = {
     start:start,
     login:login,
     loginSuccess:loginSuccess,
     request:request,
     changeBannerAd:changeBannerAd,
-    bannerAd:bannerAd()
+    bannerAd:bannerAd(),
+    downLoad:downLoad
 };

@@ -1,0 +1,7 @@
+{
+    "version": "1.0.0",
+    "map_cell": 20,
+    "baseSpeed":100,
+    "elasticity":2,
+    "map_reduce_speed":0.01
+}

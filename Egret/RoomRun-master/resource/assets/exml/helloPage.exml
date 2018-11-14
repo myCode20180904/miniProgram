@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="helloPage" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="bg" width="640" height="1136" horizontalCenter="0" verticalCenter="0" source="resource/assets/textures/sy_bg@2x.png"/>
+	<e:Group id="logo" width="640" height="1136" x="0" y="0">
+		<e:Image id="icon" width="115" height="172" x="262.5" y="200" scaleX="1" scaleY="1" source="resource/assets/egret_icon.png"/>
+		<e:Label id="hello" text="this is a label" y="128" x="233" scaleX="1" scaleY="1"/>
+	</e:Group>
+</e:Skin>

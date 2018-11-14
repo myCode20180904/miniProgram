@@ -29,6 +29,7 @@ var show=function(dt,msg){
     
 }
 
+
 var showPrefab=function(file,_callfunc,extInfo,zoder){
     if(!cc.director.getScene()){
         return;
@@ -69,7 +70,58 @@ var showPrefab=function(file,_callfunc,extInfo,zoder){
     });
 }
 
+/**
+ * 
+ * @param {*} url 
+ * @param {*} _callfunc 
+ * @param {*} extInfo 
+ * @param {*} zoder 
+ */
+var loadPrefabUrl=function(url,_callfunc,extInfo,zoder){
+    if(!cc.director.getScene()){
+        return;
+    }
+    let file_arr = file.split('/');
+    console.info(file+"--showPrefab:"+file_arr[file_arr.length-1]);
+    //
+    if(cc.find("Canvas").getChildByName(file_arr[file_arr.length-1])){
+        cc.find("Canvas").getChildByName(file_arr[file_arr.length-1]).destroy();
+    }
+    // 加载 Prefab
+    cc.loader.loadRes(file, function (err, prefab) {
+        if(err){
+            console.info(err);
+            return;
+         }else{
+            var node = cc.instantiate(prefab);
+            node.active = true;
+            node.name = file_arr[file_arr.length-1];
+            node.setPosition(0,0);
+            if(zoder){
+                cc.find("Canvas").addChild(node,zoder);
+                node.zIndex = zoder;
+            }else{
+                cc.find("Canvas").addChild(node);
+            }
+            //
+            if(_callfunc){
+                if(extInfo){
+                    _callfunc(node,extInfo);
+                }else{
+                    _callfunc(node);
+                }
+             }
+
+         }
+        
+    });
+}
+
+
+
+
 module.exports = {
     show:show,
     showPrefab:showPrefab,
+    loadPrefabUrl:loadPrefabUrl
 };
