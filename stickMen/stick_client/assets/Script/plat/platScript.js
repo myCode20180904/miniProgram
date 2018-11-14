@@ -10,14 +10,11 @@ if(window.wx){
  * @param {*} obj 
  */
 var init = function(obj){
-    let res = {};
     if(window.wx){
         target.wxApiInit(obj);
     }else{
         target.gfApiInit(obj);
     }
-
-    obj.success(res);
     return target;
 }
 

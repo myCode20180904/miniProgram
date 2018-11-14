@@ -34,13 +34,13 @@ cc.Class({
         //初始plat
         plat.target = plat.init({
             onHide:function(){
-    
+                console.log("onHide:");
             },
-            onShow:function(){
-
+            onShow:function(res){
+                console.log("onShow:",res);
             },
             success:function(res){
-                console.info("platTarget:",plat.target.getName());
+                console.info("初始系统配置 plat:",plat.target.getName());
                 console.info(res);
               
             }

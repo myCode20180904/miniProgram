@@ -5,6 +5,7 @@ var common = require('../model/common')
  * @param {*} obj 
  */
 var gfApiInit = function(obj){
+    obj.success({});
 }
 
 var getName = function(){

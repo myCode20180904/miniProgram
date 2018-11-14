@@ -1,6 +1,7 @@
 const plat = require('../plat/platScript');
+
 /**
- * 
+ * 远程加载字体资源
  * @param {url:string,path:string,success:function,complete:function} obj 
  */
 var loadHttpFont=function(obj){
@@ -43,7 +44,12 @@ var loadHttpFont=function(obj){
 
 
 
- //精灵动态加载网络图片
+ /**
+  * 精灵动态加载网络图片
+  * @param {*} container 
+  * @param {*} _iconUrl 
+  * @param {*} _callfunc 
+  */
  var loadHttpIcon =function(container,_iconUrl,_callfunc){
     if(!_iconUrl||_iconUrl==""){
         _iconUrl="http://thirdwx.qlogo.cn/mmopen/vi_32/opmkDJhG2jpF8X8AfFQfTauRlpBc7VeFicJevZ9IiajEl5g4ia75opNSZOb0FvDV87BvpUN1rsyctibGnicP7uibsMtw/132"
@@ -58,7 +64,12 @@ var loadHttpFont=function(obj){
     });
 }
 
-//加密解密字符串
+
+/**
+ * 加密解密字符串
+ * @param {*} str 
+ * @param {*} key 
+ */
 var ENStr = function(str,key){
     let last = "";
     for (let index = 0; index < str.length; index++) {

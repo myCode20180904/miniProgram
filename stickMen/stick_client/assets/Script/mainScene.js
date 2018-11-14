@@ -38,8 +38,9 @@ cc.Class({
                         //     myToast.showMsg('登陆成功4',2);
                         // });
                         myToast.showMsg('登陆成功',2);
-                        that.refreshData();
+                        that.refreshLoginData();
                         that.updateUI();
+                        that.startHall();
                     },
                     fail:function(){
 
@@ -49,10 +50,22 @@ cc.Class({
         });
     },
 
-    refreshData:function(){
+    /**
+     * 大厅初始化完成
+     */
+    startHall:function(){
+        console.info("进入大厅： ");
+    },
+
+    /**
+     * 登陆完成第一次更新数据
+     */
+    refreshLoginData:function(){
 
     },
-    
+    /**
+     * 刷新ui
+     */
     updateUI:function (){
         //this.logo.getComponent(cc.Sprite).spriteFrame = cc.loader.getRes("loadres/HelloWorld.png",cc.SpriteFrame);
 

@@ -88,16 +88,15 @@ var wxApiInit = function(obj){
     //
     //监听小游戏隐藏到后台事件。锁屏、按 HOME 键退到桌面、显示在聊天顶部等操作会触发此事件
     wx.onHide(() => { 
-        console.log("onHide "); 
-
+        obj.onHide();
     });
     wx.onShow((res)=>{
-        console.log("onShow:",res);
+        console.log("wx onShow:",res);
         userInfo.formScene = res.scene;
         if(res.query){
     
         }
-
+        obj.onShow(res);
     });
 
     wx.getSystemInfo({
@@ -106,6 +105,7 @@ var wxApiInit = function(obj){
                 console.info("getSystemInfo:",res);
                 common.screenWidth=res.screenWidth;
                 common.screenHeight=res.screenHeight;
+                obj.success({});
             }
         }
     });
