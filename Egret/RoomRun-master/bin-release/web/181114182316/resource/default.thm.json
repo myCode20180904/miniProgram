@@ -1,0 +1,8 @@
+{
+	"skins": {},
+	"autoGenerateExmlsList": true,
+	"exmls": [
+		"resource/assets/exml/helloPage.exml"
+	],
+	"path": "resource/default.thm.json"
+}
