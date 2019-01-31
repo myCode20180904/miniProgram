@@ -10,11 +10,12 @@ declare interface Platform {
 
     login(): Promise<any>
 
-    ShowshareMenu(): Promise<any>
+    showshareMenu(): Promise<any>
 
-    ShareMessage(): Promise<any>
+    shareMessage(): Promise<any>
 
-    GetInfo():Promise<any>
+    getInfo():Promise<any>
+
 }
 
 class DebugPlatform implements Platform {
@@ -24,15 +25,16 @@ class DebugPlatform implements Platform {
     async login() {
 
     }
-    async ShowshareMenu() {
+    async showshareMenu() {
 
     }
-    async ShareMessage() {
+    async shareMessage() {
         
     }
-    async GetInfo(){
+    async getInfo(){
         
     }
+
 }
 
 

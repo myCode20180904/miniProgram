@@ -10,8 +10,10 @@ class GameApp extends egret.DisplayObjectContainer {
 	public static xia:egret.DisplayObject = new egret.DisplayObject();
 	private addStage() {
         //
-		g_ManagerEUI = new ManagerEUI(this.stage);
-        g_ManagerEUI.addChild(new HelloWorld());
+		// g_ManagerEUI = new ManagerEUI(this.stage);
+        // g_ManagerEUI.addChild(new HelloWorld());
+
+        this.goToMSTS()
 	}
 
     //密室逃生
@@ -22,9 +24,9 @@ class GameApp extends egret.DisplayObjectContainer {
         var ico = "http://static.egret-labs.org/h5game/icons/10000008.jpg";
 
 		
-		// var shang:egret.Bitmap = GameConst.CreateBitmapByName("shang_jpg");
-        // shang.height = this.y;
-        // this.stage.addChild(shang);
+		var shang:egret.Bitmap = GameConst.CreateBitmapByName("shang_jpg");
+        shang.height = this.y;
+        this.stage.addChild(shang);
 
         var xia:egret.Bitmap = GameConst.CreateBitmapByName("xia_jpg");
         xia.y = this.y + GameConst.StageH;

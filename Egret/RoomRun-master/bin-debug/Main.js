@@ -175,11 +175,12 @@ var Main = (function (_super) {
      */
     Main.prototype.createGameScene = function () {
         this.addChild(new GameApp());
-        //获取画布
-        var canvas = document.querySelectorAll(".egret-player")[0]["egret-player"]["canvas"];
-        if (canvas) {
-            this.testGl(canvas);
-        }
+        // //
+        // var canvas = document.querySelectorAll(".egret-player")[0]["egret-player"]["canvas"];
+        // // 获取上下文并初始化画布
+        // if(canvas){
+        //     this.testGl(canvas);
+        // }
     };
     //gl test
     Main.prototype.testGl = function (canvas) {
@@ -190,7 +191,7 @@ var Main = (function (_super) {
         // 通过COLOR_BUFFER_BIT把颜色清除为gl.clearColor()定义的颜色
         gl.clear(gl.COLOR_BUFFER_BIT);
         //　着色器源码
-        var vertexSource = "\n                // \u58F0\u660E\u4E00\u4E2A\u5C5E\u6027\u53D8\u91CF a\n                attribute vec3 a;\n                uniform mat4 modelViewMatrix;\n                uniform mat4 projectionMatrix;\n                void main(){\n                    // \u9876\u70B9\u5728\u4F5C\u8272\u5668\u5904\u7406\u540E\u7684\u4F4D\u7F6E\u4FE1\u606F\n                    gl_Position = projectionMatrix * modelViewMatrix * vec4(a, 1.0);\n                }    \n        ";
+        var vertexSource = "\n                // \u58F0\u660E\u4E00\u4E2A\u5C5E\u6027\u53D8\u91CF a\n                attribute vec3 a;\n                void main(){\n                    // \u9876\u70B9\u5728\u4F5C\u8272\u5668\u5904\u7406\u540E\u7684\u4F4D\u7F6E\u4FE1\u606F\n                    gl_Position = vec4(a, 1.0);\n                }    \n        ";
         var fragmentSource = "\n                // \u7CBE\u5EA6\u9650\u5B9A\u7B26, \u6700\u5C0F\u7CBE\u5EA6\u4E3Afloat\n                precision mediump float;\n                void main(){\n                    // \u7247\u6BB5\u989C\u8272\n                    gl_FragColor = vec4(1.0, 1.0, 0, 1.0);\n                }\n        ";
         // 创建定点和片段着色器
         var vertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -230,6 +231,7 @@ var Main = (function (_super) {
         gl.enableVertexAttribArray(vertexAttribLocation);
         // 绘制缓冲数组
         gl.drawArrays(gl.TRIANGLES, 0, 3);
+        // let image:HTMLImageElement  = <HTMLImageElement>document.getElementById('');
     };
     return Main;
 }(eui.UILayer));

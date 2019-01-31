@@ -104,12 +104,12 @@ class Main extends eui.UILayer {
         this.addChild(new GameApp());
 
 
-        //
-        var canvas = document.querySelectorAll(".egret-player")[0]["egret-player"]["canvas"];
-        // 获取上下文并初始化画布
-        if(canvas){
-            this.testGl(canvas);
-        }
+        // //
+        // var canvas = document.querySelectorAll(".egret-player")[0]["egret-player"]["canvas"];
+        // // 获取上下文并初始化画布
+        // if(canvas){
+        //     this.testGl(canvas);
+        // }
     }
 
     //gl test

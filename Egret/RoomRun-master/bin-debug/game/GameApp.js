@@ -19,8 +19,9 @@ var GameApp = (function (_super) {
     }
     GameApp.prototype.addStage = function () {
         //
-        g_ManagerEUI = new ManagerEUI(this.stage);
-        g_ManagerEUI.addChild(new HelloWorld());
+        // g_ManagerEUI = new ManagerEUI(this.stage);
+        // g_ManagerEUI.addChild(new HelloWorld());
+        this.goToMSTS();
     };
     //密室逃生
     GameApp.prototype.goToMSTS = function () {
@@ -28,9 +29,9 @@ var GameApp = (function (_super) {
         var content = "尼玛，活着真是不容易";
         var link = "http://static.egret-labs.org/h5game/8/release.html";
         var ico = "http://static.egret-labs.org/h5game/icons/10000008.jpg";
-        // var shang:egret.Bitmap = GameConst.CreateBitmapByName("shang_jpg");
-        // shang.height = this.y;
-        // this.stage.addChild(shang);
+        var shang = GameConst.CreateBitmapByName("shang_jpg");
+        shang.height = this.y;
+        this.stage.addChild(shang);
         var xia = GameConst.CreateBitmapByName("xia_jpg");
         xia.y = this.y + GameConst.StageH;
         xia.height = this.y;

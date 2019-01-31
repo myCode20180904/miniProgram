@@ -59,7 +59,7 @@ class WxgamePlatform {
         })
     }
 
-    ShowshareMenu(){
+    showshareMenu(){
       wx.showShareMenu({
         withShareTicket: true,
         success: function () {
