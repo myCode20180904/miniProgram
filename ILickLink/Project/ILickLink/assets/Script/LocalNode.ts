@@ -8,6 +8,7 @@ import { WXManager } from "./Tool/wx/wxApi";
 import { displaywxsub } from "./Tool/wx/displaywxsub";
 import { AudioManager, AudioType } from "./manager/AudioManager";
 import { CS_GetItemList } from "./Net/BagPacket";
+import { MsEngine } from "./Net/protocols/MsEngine";
 
 /**
  * 常驻组件 从这里开始
@@ -27,6 +28,8 @@ export class LocalNode extends cc.Component {
     onLoad () {
         //添加wx
         WXManager.Instance.loadWx();
+        //MatchVs初始
+        MsEngine.Instance;
         //注册协议
         GameProto.Instance.registerProtocol();
 

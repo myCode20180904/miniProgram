@@ -3,8 +3,8 @@ import { LocalNode} from "../../LocalNode";
 import { CommonHandel} from "../../Define/CommonParam";
 import { UserManager} from "../../manager/UserManager";
 import { UIManager} from "../../manager/UIManager";
-import { LoginUI } from "../../windows/LoginUI";
 import { Logger } from "../Logger";
+import { LoginUI } from "../../View/LoginUI";
 
 /**
  * 数据域消息结构
@@ -292,8 +292,7 @@ export class WXManager {
         if(!this.checkWx()){
             return;
         }
-        Logger.info(obj.url)
-        Logger.info("POSTDATA"+JSON.stringify(obj.data))
+        Logger.info("微信http请求：",obj.url,"   POSTDATA:",JSON.stringify(obj.data))
         const requestTask = this.wx.request({
             url:obj.url,
             data:obj.data,
@@ -302,11 +301,10 @@ export class WXManager {
             },
             method: "POST",
             success:function(res){
-                Logger.info(res);
+                obj.success(res);
             },
             fail:function(err){
                 obj.fail(err);
-                Logger.info("err"+JSON.stringify(err));
             }
         })
         return requestTask;
@@ -458,6 +456,25 @@ export class WXManager {
     }
 
     
+    //GET https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
+    /**
+     * 微信平台 openID
+     * @param obj 
+     */
+    public getWxOpenID(obj:{code:string,success:Function}){
+        this.request({
+            url:`https://api.weixin.qq.com/sns/jscode2session?appid=${GameConfig.WxConfig.AppId}&secret=${GameConfig.WxConfig.AppSecret}&js_code=${obj.code}&grant_type=authorization_code`,
+            data:{
+            },
+            success:function(res){
+                obj.success(res);
+            },
+            fail:function(err){
+
+            }
+        })
+    }
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * downLoad 微信下载资源api

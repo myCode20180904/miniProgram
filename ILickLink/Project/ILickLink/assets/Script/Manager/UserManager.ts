@@ -18,10 +18,20 @@ export class UserManager {
     //是否今天第一次登陆
     public isFirstToday:boolean = false;
     //是否登录
-    public isLogin = false;
+    private _isLogin:boolean = false;
     // 用户数据
     private userInfo: UserInfo = new UserInfo();
 
+    public set isLogin(value){
+        this._isLogin = value;
+        if(value){
+            UIManager.Instance.closeWindow("LoginUI")
+            this.refreshToUI();
+        }
+    }
+    public get isLogin():boolean{
+        return this._isLogin;
+    }
     /**
      * 设置用户数据
      * @param {object} message 登陆消息
@@ -90,7 +100,7 @@ export class UserManager {
     public refreshToUI(){
         let mainUI:MainUI = UIManager.Instance.findComponent("MainUI"); 
         if(mainUI){
-            // mainUI.refreshUI();
+            mainUI.refreshUI();
         }
     }
 

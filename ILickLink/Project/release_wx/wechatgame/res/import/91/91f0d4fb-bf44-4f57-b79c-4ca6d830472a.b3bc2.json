@@ -1,1 +1,0 @@
-{"__type__":"cc.JsonAsset","_name":"player","json":[{"Id":"1000","Name":"主角","Desc":"主角","Modelid":"","Type":"1","Maxhp":"1","Addhp":"-1","Attack":"1","Nearatk":"100","Movespeed":"100","Attacksound":"-1","Deadsound":"-1","Produce":"-1","Combat":"-1"}]}

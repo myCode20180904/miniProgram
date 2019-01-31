@@ -1,1 +1,0 @@
-{"__type__":"cc.TextAsset","_name":"Buff","text":"索引,技能名称,类型(1阴阳盾),效果,最大层数,数值,数值.1\r\nId,Name,Type,Effect,MaxNumber,A,B\r\nNumber,String,Number,String,Number,Number,Number\r\n1,阴阳盾(减伤A%加防御B%),1,阴阳盾_施法,1,1000,1000\r\n"}

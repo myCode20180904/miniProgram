@@ -48,10 +48,10 @@ export class MsEngine {
      */
     initRsp(status) {
         if (status === 200) {
-            Logger.info("Ts版本 初始化成功");
+            Logger.info("MatchVs 初始化成功");
             this.engine.registerUser();
         } else {
-            Logger.info("Ts版本 初始化失败");
+            Logger.info("MatchVs 初始化失败");
         }
     }
 
@@ -59,15 +59,15 @@ export class MsEngine {
      * 注册回调
      * @param userInfo
      */
-    registerUserRsp(userInfo) {
+    registerUserRsp(userInfo:MsRegistRsp) {
         if  (userInfo.status === 0) {
-            Logger.info("Ts版本 注册成功");
+            Logger.info("MatchVs 注册成功",userInfo);
             UserManager.Instance.getUserInfo().uid = userInfo.userID;
-            UserManager.Instance.getUserInfo().token = userInfo.token;
-            console.info(GenerateUUID())
-            this.engine.login(userInfo.userID,userInfo.token,'1');
+			UserManager.Instance.getUserInfo().token = userInfo.token;
+			UserManager.Instance.getUserInfo().nickName = userInfo.name;
+			UserManager.Instance.getUserInfo().avatarUrl = userInfo.avatar;
         } else {
-            Logger.info("Ts版本 注册失败");
+            Logger.info("MatchVs 注册失败");
         }
 	}
 
@@ -76,22 +76,22 @@ export class MsEngine {
 	 */
 	sendLogin(){
 		console.info(GenerateUUID())
-        this.engine.login(UserManager.Instance.getUserInfo().uid,UserManager.Instance.getUserInfo().token,'1');
+		this.engine.login(UserManager.Instance.getUserInfo().uid,UserManager.Instance.getUserInfo().token,'1');
 	}
     /**
      * 登录回调
      * @param loginRsp
      */
     loginRsp(loginRsp:MsLoginRsp) {
-        Logger.info("???",loginRsp);
         if  (loginRsp.status === 200) {
-            console.log("Ts版本 登录成功");
+			console.log("MatchVs 登录成功");
+			UserManager.Instance.isLogin = true;
             if (loginRsp.roomID !== null && loginRsp.roomID !== '0') {
                 this.engine.leaveRoom("");
             } else {
             }
         } else {
-            console.log("Ts版本 登录失败");
+            console.log("MatchVs 登录失败");
         }
 
 	}

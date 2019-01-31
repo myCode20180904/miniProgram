@@ -1,1 +1,0 @@
-{"__type__":"cc.TextAsset","_name":"Skill","text":"索引,技能名称,攻击距离,移动距离,反向移动速度\r\nId,Name,AttackDistance,MoveSpeed,BackSpeed\r\nNumber,String,Number,Number,Number\r\n0,quan_jn|1,150,10,15\r\n1,quan_jn|2,50,45,75\r\n2,quan_jn|3,100,15,20\r\n"}

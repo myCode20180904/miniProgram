@@ -1,5 +1,5 @@
 {
-    "deviceOrientation": "landscape",
+    "deviceOrientation": "portrait",
     "openDataContext": "subContent",
     "networkTimeout": {
         "request": 5000,

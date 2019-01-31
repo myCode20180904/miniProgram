@@ -1,12 +1,17 @@
 import { BaseUI} from "./BaseUI";
 import { UIManager} from "../manager/UIManager";
 import { Logger } from "../Tool/Logger";
+import { UserManager } from "../manager/UserManager";
+import { Util } from "../Define/Util";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export class MainUI extends BaseUI {
 
-
+    @property(cc.Label)
+    lb_name:cc.Label = null;
+    @property(cc.Node)
+    headIcon:cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -25,8 +30,11 @@ export class MainUI extends BaseUI {
         this.node.on(cc.Node.EventType.TOUCH_START,function(){},this);
     }
 
-    public play(){
-
+    public refreshUI(){
+        //name
+        this.lb_name.string = UserManager.Instance.getUserInfo().nickName;
+        //图片
+        Util.loadHttpIcon(this.headIcon,UserManager.Instance.getUserInfo().avatarUrl,null);
     }
 
      /**
@@ -40,7 +48,7 @@ export class MainUI extends BaseUI {
             this.close();
         }
         if(customEventData=="play"){
-            this.play();
+            
         }
       
     }

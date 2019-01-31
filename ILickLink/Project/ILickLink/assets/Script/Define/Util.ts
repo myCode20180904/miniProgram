@@ -52,4 +52,25 @@ export class Util {
         return dst;
     };
 
+    /**
+     * 精灵动态加载网络图片
+     * @param container 
+     * @param _iconUrl 
+     * @param _callfunc 
+     */
+    public static loadHttpIcon(container, _iconUrl, _callfunc) {
+        if (!_iconUrl || _iconUrl == "") {
+            _iconUrl = "http://thirdwx.qlogo.cn/mmopen/vi_32/opmkDJhG2jpF8X8AfFQfTauRlpBc7VeFicJevZ9IiajEl5g4ia75opNSZOb0FvDV87BvpUN1rsyctibGnicP7uibsMtw/132"
+        }
+        cc.loader.load({ url: _iconUrl, type: 'png' }, function (err, tex) {
+            var spriteFrame = new cc.SpriteFrame(tex)
+            container.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+            if (_callfunc) {
+                _callfunc()
+            }
+            // Logger.info('Should load a texture from RESTful API by specify the type: ' + (tex instanceof cc.Texture2D));
+        });
+    }
+
+
 }
