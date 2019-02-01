@@ -47,10 +47,17 @@ export class MainUI extends BaseUI {
         if(customEventData=="close"){
             this.close();
         }
-        if(customEventData=="play"){
-            
+        if(customEventData=="test"){
+            this.test();
         }
       
+    }
+
+    /**
+     * 测试界面
+     */
+    private test(){
+        UIManager.Instance.openWindow("TestUI");
     }
 
     /**

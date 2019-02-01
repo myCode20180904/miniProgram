@@ -9,6 +9,7 @@ import { displaywxsub } from "./Tool/wx/displaywxsub";
 import { AudioManager, AudioType } from "./manager/AudioManager";
 import { CS_GetItemList } from "./Net/BagPacket";
 import { MsEngine } from "./Net/protocols/MsEngine";
+import { GAME_DEBUG } from "./Define/GameConfig";
 
 /**
  * 常驻组件 从这里开始
@@ -32,7 +33,7 @@ export class LocalNode extends cc.Component {
         MsEngine.Instance;
         //注册协议
         GameProto.Instance.registerProtocol();
-
+        cc.debug.setDisplayStats(GAME_DEBUG);
     }
 
     async start () {
@@ -84,17 +85,4 @@ export class LocalNode extends cc.Component {
 
     // update (dt) {}
 
-
-
-    private async openTest(){
-
-        //资源加载完成
-        await UIManager.Instance.openWindow('TestUI');
-        // UIManager.Instance.closeWindow('TestUI');
-        //查找节点
-        // UIManager.Instance.findWindow('TestUI').destroy();
-        //查找组件
-        let testComp = UIManager.Instance.findComponent('TestUI') as TestUI;
-        testComp.play();
-    }
 }
