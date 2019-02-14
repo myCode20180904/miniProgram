@@ -58,6 +58,9 @@ export class FighterObj extends ObjAttribute{
     public constructor(config: any,_node:cc.Node,parent:cc.Node) {
         super(config);
         this.fighterNode = _node;
+        if(this.fighterNode == null){
+            return;
+        }
         parent.addChild(this.fighterNode);
 
         this.loadSpine();

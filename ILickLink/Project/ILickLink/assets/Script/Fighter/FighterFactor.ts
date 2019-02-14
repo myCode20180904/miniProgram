@@ -4,7 +4,7 @@ import { Logger } from "../Tool/Logger";
 import { Monster } from "./Monster";
 import { Player } from "./player";
 
-var POOLMAX:number = 20;
+var POOLMAX:number = 5;
 /**
  * FighterFactor 战斗角色管理工厂
  */
@@ -133,13 +133,18 @@ export class FighterFactor {
         let id = [1001,2001,3001,4001];
         let config = this.monsterConfig[id[Math.floor(Math.random()*4)]]
         let monster:Monster = new Monster(config,this.createObj(),parent);
+        if(monster.fighterNode== null){
+            monster = null;
+            return null;
+        }
         this.monster_count++;
         monster.countId = 1000+this.monster_count;
         this.monsters[monster.countId] = monster;
         return monster;
     }
     public removeMonster(count_id:number){
-        this.monsters[count_id].removeFromParent();
+        // this.monsters[count_id].removeFromParent();
+        this.fighterPool.put(this.monsters[count_id].fighterNode);
         delete this.monsters[count_id];
         this.monster_count--;
     }

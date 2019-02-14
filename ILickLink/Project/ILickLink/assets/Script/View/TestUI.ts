@@ -35,12 +35,18 @@ export class TestUI extends BaseUI {
     }
     public addrand(){
         let monster = FighterFactor.Instance.createMonster(this.node);
+        if(!monster){
+            return;
+        }
         monster.setPos(cc.v2(0,-600+this.monsters.length*100));
         this.monsters.push(monster.countId);
     }
     public remove(){
-        if(this.monsters.length>0)
-        FighterFactor.Instance.removeMonster(this.monsters.shift());
+        if(this.monsters.length>0){
+            let die_id = this.monsters.shift();
+            FighterFactor.Instance.removeMonster(die_id);
+        }
+
     }
 
      /**
