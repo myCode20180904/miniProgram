@@ -10,6 +10,7 @@ import { AudioManager, AudioType } from "./manager/AudioManager";
 import { CS_GetItemList } from "./Net/BagPacket";
 import { MsEngine } from "./Net/protocols/MsEngine";
 import { GAME_DEBUG } from "./Define/GameConfig";
+import { LoginUI } from "./View/LoginUI";
 
 /**
  * 常驻组件 从这里开始
@@ -41,8 +42,8 @@ export class LocalNode extends cc.Component {
         cc.game.addPersistRootNode(this.node);
 
         //
-        await UIManager.Instance.openWindow("MainUI")
         await UIManager.Instance.openWindow('LoginUI');
+        await UIManager.Instance.openWindow("MainUI",-1)
         await LoadManager.Instance.loadRes(new LoadHandel(
             function(process:number){
 
@@ -52,8 +53,10 @@ export class LocalNode extends cc.Component {
                 
             }
         ));
-        
-        
+        let loginUI:LoginUI = UIManager.Instance.findComponent("LoginUI");
+        if(loginUI){
+            loginUI.showLogin();
+        }
 
     }
 

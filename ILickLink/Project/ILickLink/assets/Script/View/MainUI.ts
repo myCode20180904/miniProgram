@@ -3,6 +3,8 @@ import { UIManager} from "../manager/UIManager";
 import { Logger } from "../Tool/Logger";
 import { UserManager } from "../manager/UserManager";
 import { Util } from "../Define/Util";
+import { WXManager } from "../Tool/wx/wxApi";
+import { CommonHandel } from "../Define/CommonParam";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -50,7 +52,48 @@ export class MainUI extends BaseUI {
         if(customEventData=="test"){
             this.test();
         }
-      
+        if(customEventData=="startllx"){
+            this.starLLX();
+        }
+        if(customEventData=="share"){
+            this.share();
+        }
+        if(customEventData=="rank"){
+            this.rank();
+        }
+    }
+
+    /**
+     * 关闭
+     */
+    private starLLX(){
+        UIManager.Instance.openWindow('LLXLayer'); 
+    }
+    /**
+     * 排行
+     */
+    private rank(){
+        UIManager.Instance.openWindow('RankUI');
+    }
+    /**
+     * 分享
+     */
+    private share(){
+        var that = this;
+        const handel = new CommonHandel();
+        handel.success = function(){
+            
+        };
+        handel.fail = function(){};
+        handel.complete = function(){
+
+        };
+        //弹出微信分享
+        WXManager.Instance.share({
+            title:'一起来连线',
+            imageUrl:''+UserManager.Instance.getUserInfo().avatarUrl,
+            query:`sharetype=1&sharekey=${UserManager.Instance.getUserInfo().openid}`
+        },handel);
     }
 
     /**

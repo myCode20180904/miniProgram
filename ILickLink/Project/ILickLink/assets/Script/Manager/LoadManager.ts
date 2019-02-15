@@ -3,6 +3,8 @@ import { CommonHandel, LoadHandel} from "../Define/CommonParam";
 import { GameConfig,LoginType,GameLoginType} from "../Define/GameConfig";
 import { WXManager} from "../Tool/wx/wxApi";
 import { Logger } from "../Tool/Logger";
+import { LoginUI } from "../View/LoginUI";
+import { UIManager } from "./UIManager";
 /**
  * LoadManager  加载资源管理
  */
@@ -162,7 +164,10 @@ export class LoadManager {
     }
     private processLoadView(completedCount,totalCount){
         // Logger.info("加载本地资源:",`完成度:${completedCount}/${totalCount}`);
-        let process = completedCount/totalCount;
+        let loginUI:LoginUI = UIManager.Instance.findComponent("LoginUI");
+        if(loginUI){
+            loginUI.showProcess(Math.floor(completedCount/totalCount)*100);
+        }
     }
 	
 }

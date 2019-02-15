@@ -13,8 +13,12 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export class LoginUI extends BaseUI {
 
-    // @property(cc.Node)
-    // loginBtn: cc.Node = null;
+    @property(cc.Node)
+    loginBtn: cc.Node = null;
+    @property(cc.ProgressBar)
+    bar: cc.ProgressBar = null;
+    @property(cc.Label)
+    tip: cc.Label = null;
 
     //微信授权按钮
     wx_button: any = null;
@@ -39,8 +43,23 @@ export class LoginUI extends BaseUI {
         this.node.on(cc.Node.EventType.TOUCH_START,function(){},this);
 
     }
+    /**
+     * 显示登陆按钮
+     */
+    public showLogin(){
+        this.loginBtn.active = true;
+        this.bar.node.active = false;
+        this.tip.string = `点击进入游戏`;
+        this.node.getChildByName("background").getComponent(cc.Button).interactable = true;
+    }
+    /**
+     * 显示加载进度
+     */
+    public showProcess(value:number){
+        this.bar.progress = value/100;
+        this.tip.string = `资源加载中...    ${value}%`;
 
-
+    }
 
     public login(){
         if(window['wx']){
