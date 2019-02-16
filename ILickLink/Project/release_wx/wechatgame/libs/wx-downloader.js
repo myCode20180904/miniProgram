@@ -355,10 +355,12 @@ function downloadRemoteFile (item, callback) {
         },
         fail: function (res) {
             // Continue to try download with downloader, most probably will also fail
-            callback({
-                status: 0,
-                errorMessage: res && res.errMsg ? res.errMsg : "Download file failed: " + remoteUrl
-            }, null);
+            cc.error("download fail, try download again most probably will also fail ")
+            downloadRemoteFile(item, callback)
+            // callback({
+            //     status: 0,
+            //     errorMessage: res && res.errMsg ? res.errMsg : "Download file failed: " + remoteUrl
+            // }, null);
         }
     })
 }

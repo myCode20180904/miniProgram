@@ -6,6 +6,7 @@ import { BagManager } from "./BagManager";
 import { LocalNode } from "../LocalNode";
 import { Logger } from "../Tool/Logger";
 import { MainUI } from "../View/MainUI";
+import { LLXLayer } from "../Game_LLX/LLXLayer";
 
 export class UserManager {
     private static instance: UserManager;
@@ -26,6 +27,8 @@ export class UserManager {
         this._isLogin = value;
         if(value){
             UIManager.Instance.closeWindow("LoginUI")
+            UIManager.Instance.openWindow('RankUI',-1);
+            this.checkFirstToday();
             this.refreshToUI();
         }
     }
@@ -64,14 +67,17 @@ export class UserManager {
         this.userInfo.maxscore = message.maxscore;
         this.userInfo.maxstage = message.maxstage;
 
-        this.checkFirstToday();
-        this.loginSuccess();
         this.refreshToUI()
     }
 
-    private loginSuccess(){
-        var localNode = cc.find("LocalNode").getComponent("LocalNode") as LocalNode;
-        localNode.loginComplete();
+    /**
+     * 更新金币
+     * @param gold 
+     */
+    public updateGold(addgold:number){
+        this.userInfo.gold+=addgold;
+        cc.sys.localStorage.setItem('goldNum', this.userInfo.gold);
+        this.refreshToUI()
     }
     /**
      * 更新资产
@@ -102,6 +108,11 @@ export class UserManager {
         if(mainUI){
             mainUI.refreshUI();
         }
+
+        let llx_ly:LLXLayer = UIManager.Instance.findComponent("LLXLayer"); 
+        if(llx_ly){
+            llx_ly.refreshUI();
+        }
     }
 
     // public checkDevicdId(){
@@ -124,6 +135,13 @@ export class UserManager {
         }
         cc.sys.localStorage.setItem('lastEnterTime', new Date().getTime());
 
+        this.initLocalData();
+    }
+
+    /**
+     * 初始化本地存储
+     */
+    private initLocalData(){
         //今天第一次进入
         if(this.isFirstToday){
             //重置看视屏奖励次数
@@ -131,6 +149,12 @@ export class UserManager {
             //重置分享奖励次数
             cc.sys.localStorage.setItem('rewardShareCount', 5);
         }
+        //获取关卡等级
+        if(!cc.sys.localStorage.getItem('goldNum')){
+            cc.sys.localStorage.setItem('goldNum', 200);
+        }
+        this.userInfo.gold = parseInt(cc.sys.localStorage.getItem('goldNum'));
+        console.info(this.userInfo.gold);
     }
 
 }

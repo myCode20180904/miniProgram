@@ -2,7 +2,11 @@ import { BaseUI} from "../View/BaseUI";
 import { UIManager} from "../manager/UIManager";
 import { Logger } from "../Tool/Logger";
 import { LLXManager } from "./LLXManager";
-import { LineDir, string2color } from "../Define/CommonParam";
+import { LineDir, string2color, CommonHandel } from "../Define/CommonParam";
+import { WXManager } from "../Tool/wx/wxApi";
+import { UserManager } from "../manager/UserManager";
+import { UserInfo } from "../Define/UserType";
+import { GameConfig } from "../Define/GameConfig";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -24,6 +28,8 @@ export class LLXLayer extends BaseUI {
     tipStar:cc.Node = null;
     @property(cc.Node)
     hand:cc.Node = null;
+    @property(cc.Node)
+    tipbg:cc.Node = null;
     
     //===========
     private lySize:cc.Size = cc.size(600,600);
@@ -64,6 +70,8 @@ export class LLXLayer extends BaseUI {
 
     public refreshUI(){
         this.node.getChildByName("level").getComponent(cc.Label).string = '第'+LLXManager.Instance.gateLevel+"关";
+        this.node.getChildByName("stepCount").getComponent(cc.Label).string = '步数:'+this.step;
+        this.node.getChildByName("gold").getChildByName("num").getComponent(cc.Label).string = UserManager.Instance.getUserInfo().gold.toString();
     }
 
      /**
@@ -74,7 +82,7 @@ export class LLXLayer extends BaseUI {
     menu (event:cc.Event,customEventData:any){
         // Logger.info('touch menu:',customEventData);
         if(customEventData=="back"){
-            this.close();
+            LLXManager.Instance.exitGame();
         }
         if(customEventData=="delete"){
             //悔一步
@@ -82,23 +90,94 @@ export class LLXLayer extends BaseUI {
         }
         if(customEventData=="again"){
             //重来
-            this.close();
-            UIManager.Instance.openWindow('LLXLayer');
+            LLXManager.Instance.restartGame();
         }
         if(customEventData=="usetip"){
+            //使用提示 -50
+            if(this.useGold(50)){
+                this.tip();
+            }
+            
+        }
+        if(customEventData=="lookMv"){
+            //看视屏+50
+            let count:number = 50;
+            WXManager.Instance.createRewardedVideoAd({
+                adUnitId:'adunit-f60366d91f6e4092',
+                onLoad:function(){
+
+                },
+                onClose:function(){
+                    let value = cc.sys.localStorage.getItem('rewardLookMvCount');
+                    if(value&&value>0){
+                        value--;
+                        //领取奖励
+                        UserManager.Instance.updateGold(count);
+                        UIManager.Instance.showToast(`金币 +${count},今日还可通过观看视频获得金币${value}次`,2);
+                        cc.sys.localStorage.setItem('rewardLookMvCount',value);
+                    }else{
+                        UIManager.Instance.showToast("今天获取视频奖励次数已达上限",2);
+                    }
+                    
+                }
+            });
+        }
+        if(customEventData=="sharetip"){
+            //分享提示
+            this.share();
+        }
+        if(customEventData=="?????????"){
             //使用提示
             this.tip();
         }
         
       
     }
-
     /**
-     * 关闭
+     * 分享
      */
-    private close(){
-        UIManager.Instance.closeWindow('LLXLayer');
-        LLXManager.Instance.exitGame();
+    private share(){
+        var that = this;
+        const handel = new CommonHandel();
+        handel.success = function(){
+            
+        };
+        handel.fail = function(){
+
+        };
+        handel.complete = function(){
+
+        };
+        //弹出微信分享
+        WXManager.Instance.share({
+            title:'我在挑战更高层，一起来玩吧！',
+            imageUrl:GameConfig.imageUrl+'/shareImg1.png',
+            query:`sharetype=1&sharekey=${UserManager.Instance.getUserInfo().openid}`
+        },handel);
+
+        //分享结果
+        let value = cc.sys.localStorage.getItem('rewardShareCount');
+        if(value&&value>0){
+            value--;
+            this.tip();
+            UIManager.Instance.showToast(`今日还可通过分享提示${value}次`,2);
+            cc.sys.localStorage.setItem('rewardShareCount',value);
+        }else{
+            UIManager.Instance.showToast("今日通过分享提示的次数已达上限",2);
+        }
+    }
+    /**
+     * 消耗金币
+     */
+    private useGold(count:number):boolean{
+        if(UserManager.Instance.getUserInfo().gold>=count){
+            UserManager.Instance.updateGold(-count);
+            UIManager.Instance.showToast(`金币 -${count}`,2);
+            return true;
+        }else{
+            UIManager.Instance.showToast("抱歉，您的金币不够了！",2);
+            return false;
+        }
     }
 
     // update (dt) {}
@@ -131,10 +210,13 @@ export class LLXLayer extends BaseUI {
 
         if(LLXManager.Instance.gameinfo.newplayer){
             this.newPlayerTip();
-            UIManager.Instance.showToast("连线所有的相同颜色的格子，\n所有格子必须都要被填满。");
+            // UIManager.Instance.showToast("连线所有的相同颜色的格子，\n所有格子必须都要被填满。");
+            this.tipbg.active = true;
         }
     }
-
+    /**
+     * 检查通关情况
+     */
     private checkPass(){
         let com_block = 0;
         console.info(this.completeLines)
@@ -162,10 +244,23 @@ export class LLXLayer extends BaseUI {
         }
         this.refreshUI();
     }
+    /**
+     * 加步数
+     */
+    addStep(num:number){
+        this.step+=num;
+    }
+     /**
+     * 减步数
+     */
+    delStep(num:number){
+        this.step-=num;
+    }
 
     //通关
     passGame(){
-        this.close();
+        UIManager.Instance.closeWindow('LLXLayer');
+        LLXManager.Instance.clear();
         LLXManager.Instance.nextLevel();
         UIManager.Instance.openWindow('LLXLayer');
     }
@@ -492,12 +587,13 @@ export class LLXLayer extends BaseUI {
     }
     private checkStep(){
         let flagStep = false;
-        
-        
+    
+        //
         if(flagStep){
            
             UIManager.Instance.showToast("步数不足，无法完成关卡");
         }
+        
         return flagStep;
     }
 
@@ -563,11 +659,9 @@ export class LLXLayer extends BaseUI {
             if(this.nowBlock === this.preBlock){
                 return;
             }
-            //步长不够
-            let flagStep = false;
-            
-            if(flagStep){
-                return; 
+             //步长不够
+           if(this.checkStep()){
+                return;
             }
             //提示过了不能再连了
             if(this.preBlock.getComponent("block_s").haiTipStar==1){
@@ -623,7 +717,17 @@ export class LLXLayer extends BaseUI {
 
                                 this.completeLines[this.preBlock.getComponent("block_s").__pointColor] = this.lineMaps[this.preBlock.getComponent("block_s").__pointColor];
                                 // this.node.getComponent("audioScript").playEff("line_end");
-                                this.step++;
+                                //步数
+                                this.addStep(1);
+                                 //消耗金币
+                                let count = 20;
+                                if(UserManager.Instance.getUserInfo().gold>=count){
+                                    UserManager.Instance.updateGold(-count);
+                                    // UIManager.Instance.showToast(`金币 -${count}`,2);
+                                }else{
+                                    UIManager.Instance.showToast("抱歉，您的金币不够了！",2);
+                                    this.removeLastLine();
+                                }
                                 //通关检测
                                 this.checkPass();
 

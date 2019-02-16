@@ -201,12 +201,12 @@
     "_prefab": {
       "__id__": 7
     },
-    "_opacity": 213.945,
+    "_opacity": 213,
     "_color": {
       "__type__": "cc.Color",
-      "r": 236,
-      "g": 212,
-      "b": 47,
+      "r": 255,
+      "g": 255,
+      "b": 222,
       "a": 255
     },
     "_contentSize": {
@@ -271,7 +271,7 @@
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
+    "_N$overflow": 3,
     "_id": ""
   },
   {

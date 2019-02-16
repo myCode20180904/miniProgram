@@ -1,5 +1,6 @@
 
 export const GAME_DEBUG:boolean = false;
+export const USE_MATCHVS:boolean = false;
 
 //登陆方式（与服务器保持一致）
 export enum LoginType {

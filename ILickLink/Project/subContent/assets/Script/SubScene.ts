@@ -13,7 +13,7 @@ export class WX_OpenData{
 
 
 const {ccclass, property} = cc._decorator;
-const  wxkey='rxgx';
+const  wxkey='ILickLink';
 var myrank:number;
 
 @ccclass
@@ -23,8 +23,10 @@ export default class SubScene extends cc.Component {
     rankScroll: cc.Node = null;
     @property(cc.Node)
     rankItem: cc.Node = null;
-    @property(cc.Node)
-    selfItem: cc.Node = null;
+    @property(cc.SpriteFrame)
+    itemBg1: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    itemBg2: cc.SpriteFrame = null;
 
     //用户信息
     userInfo:{nickName:string, openID:string} = {nickName:'',openID:''}
@@ -37,7 +39,18 @@ export default class SubScene extends cc.Component {
         if(window['wx']){
             this.onMessage();
         }else{
-            this.updateRankScroll([])
+            this.updateRankScroll([
+                {nickname:"张三",avatarUrl:"",level:1},
+                {nickname:"李四",avatarUrl:"",level:1},
+                {nickname:"王五",avatarUrl:"",level:1},
+                {nickname:"溜溜",avatarUrl:"",level:1},
+                {nickname:"七杀",avatarUrl:"",level:1},
+                {nickname:"巴拉",avatarUrl:"",level:1},
+                {nickname:"就撒旦法",avatarUrl:"",level:1},
+                {nickname:"上课了等级分三份",avatarUrl:"",level:1},
+                {nickname:"案多发发士大夫撒速度",avatarUrl:"",level:1}
+                
+            ])
         }
         
     }
@@ -51,95 +64,47 @@ export default class SubScene extends cc.Component {
 
         let rankScrollComp:cc.ScrollView = this.rankScroll.getComponent(cc.ScrollView);
         rankScrollComp.content.removeAllChildren();
-        
         if(ranklist.length<=0)
         {
             return;
         }
         
-        let oneHight = this.rankItem.height+10;
-        rankScrollComp.content.height = ranklist.length*oneHight;
+        let oneHight = this.rankItem.height + 9;
+        rankScrollComp.content.height = ranklist.length * oneHight;
         
-        let hasMyRank:boolean = false;
         for (let index = 0; index < ranklist.length; index++) {
             const element = ranklist[index];
             let item = cc.instantiate(this.rankItem);
             item.active = true;
             rankScrollComp.content.addChild(item);
 
-            item.setPosition(cc.v2(0,-index*oneHight-oneHight/2));
+            item.setPosition(cc.v2(0, -index * oneHight - oneHight / 2));
 
-            let head =  item.getChildByName("iconMask").getChildByName("head");
+            let head =  item.getChildByName("head");
             this.loadHttpIcon(head,element.avatarUrl,function(){});
             
             let name = item.getChildByName("name").getComponent(cc.Label);
             name.string  = element.nickname;
 
-            let value = JSON.parse(element.KVDataList[0].value) 
+            if(element.KVDataList){
+                let value = JSON.parse(element.KVDataList[0].value) 
 
-            let score = item.getChildByName("score").getComponent(cc.Label);
-            score.string = value.score;
-            let layer = item.getChildByName("layer").getComponent(cc.Label);
-            layer.string = value.layer+'层';
-            let rank = item.getChildByName("rank").getComponent(cc.Label);
-            rank.string = "NO."+(index+1);
+                let level = item.getChildByName("level").getComponent(cc.Label);
+                level.string = "关卡:"+value.level;
+            }
+           
+           
 
             //如果是当前用户
             if(element.openid==this.userInfo.openID){
-                myrank = index+1;
-                hasMyRank = true;
+                item.getComponent(cc.Sprite).spriteFrame = this.itemBg2;
             }else if(element.nickname==this.userInfo.nickName){
-                myrank = index+1;
-                hasMyRank = true;
+                item.getComponent(cc.Sprite).spriteFrame = this.itemBg2;
+            }else{
+                item.getComponent(cc.Sprite).spriteFrame = this.itemBg1;
             }
         }
 
-        if(hasMyRank){
-            this.selfItem.active = true;
-            this.setmyrank();
-        }else{
-        }
-    }
-    
-    /**设置自己的排名信息 */
-    private setmyrank() {
-
-        window['wx'].getUserInfo({
-            openIdList: ['selfOpenId'],
-            lang: 'zh_CN',
-            success: (res) => {
-                let name = this.selfItem.getChildByName("myname").getComponent(cc.Label);
-                name.string = res.data[0].nickName;
-                let head =  this.selfItem.getChildByName("myhead");
-                this.loadHttpIcon(head,res.data[0].avatarUrl,function(){});
-            },
-            fail: (res) => {
-            }
-        })
-
-        window['wx'].getUserCloudStorage({
-            keyList: [wxkey],
-            success: res => {
-                let KVDataList = res.KVDataList;
-                console.info("获得用户数据：", res)
-                if(res.KVDataList.length<=0){
-                    return;
-                }
-                let value = JSON.parse(KVDataList[0].value)
-
-                let score = this.selfItem.getChildByName("myscore").getComponent(cc.Label);
-                score.string = value.score;
-                let layer = this.selfItem.getChildByName("mylayer").getComponent(cc.Label);
-                layer.string = value.layer + "层";
-                let rank = this.selfItem.getChildByName("myrank").getComponent(cc.Label);
-                rank.string = "NO." + myrank;
-            },
-            fail: e => {
-                console.info("获取信息失败")
-            },
-            complete: e => {
-            },
-        })
     }
 
     /**
@@ -156,17 +121,8 @@ export default class SubScene extends cc.Component {
         rankinfo.sort((a: any, b: any) => {
             let valueA = JSON.parse(a.KVDataList[0].value);
             let valueB = JSON.parse(b.KVDataList[0].value);
-            if (valueA.layer > valueB.layer) {
+            if (valueA.level > valueB.level) {
                 return -1;
-            }
-            if (valueA.layer == valueB.layer) {
-                //return 1;
-                if (valueA.score > valueB.score) {
-                    return -1;
-                }
-                else {
-                    return 1;
-                }
             }
             else {
                 return 1;

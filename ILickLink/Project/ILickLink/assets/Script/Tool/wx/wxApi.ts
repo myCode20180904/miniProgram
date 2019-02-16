@@ -399,7 +399,7 @@ export class WXManager {
      * createRewardedVideoAd
      * @param obj 
      */
-    public createRewardedVideoAd(obj:{onLoad:Function,onClose:Function}){
+    public createRewardedVideoAd(obj:{adUnitId:string,onLoad:Function,onClose:Function}){
         Logger.info("广告视屏");
         if(!this.checkWx()){
             return;
@@ -407,7 +407,7 @@ export class WXManager {
         if(!this.wx.createRewardedVideoAd)return;
         var that = this;
         if(!that.rewardedVideoAd){
-            that.rewardedVideoAd = this.wx.createRewardedVideoAd({ adUnitId:'adunit-f60366d91f6e4092'});
+            that.rewardedVideoAd = this.wx.createRewardedVideoAd({ adUnitId:obj.adUnitId});
         }
 
         if(that.rewardedVideoAd){

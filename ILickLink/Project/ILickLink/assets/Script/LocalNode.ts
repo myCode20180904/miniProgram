@@ -1,15 +1,12 @@
 
 import { CommonHandel, LoadHandel} from "./Define/CommonParam";
 import { UIManager} from "./manager/UIManager";
-import { TestUI} from "./View/TestUI";
 import { LoadManager } from "./manager/LoadManager";
 import { GameProto } from "./Net/protocols/GameProto";
 import { WXManager } from "./Tool/wx/wxApi";
 import { displaywxsub } from "./Tool/wx/displaywxsub";
-import { AudioManager, AudioType } from "./manager/AudioManager";
-import { CS_GetItemList } from "./Net/BagPacket";
 import { MsEngine } from "./Net/protocols/MsEngine";
-import { GAME_DEBUG } from "./Define/GameConfig";
+import { GAME_DEBUG, USE_MATCHVS } from "./Define/GameConfig";
 import { LoginUI } from "./View/LoginUI";
 
 /**
@@ -31,7 +28,9 @@ export class LocalNode extends cc.Component {
         //添加wx
         WXManager.Instance.loadWx();
         //MatchVs初始
-        MsEngine.Instance;
+        if(USE_MATCHVS){
+            MsEngine.Instance;
+        }
         //注册协议
         GameProto.Instance.registerProtocol();
         cc.debug.setDisplayStats(GAME_DEBUG);
@@ -60,18 +59,6 @@ export class LocalNode extends cc.Component {
 
     }
 
-    /**
-     * 登陆完成
-     */
-    public loginComplete(){
-                
-        //获取背包配置
-        GameProto.Instance.requestGetItemList(new CS_GetItemList());
-        //test
-        // this.openTest();
-        AudioManager.Instance.playBg(AudioType.MUSIC_LoginBG)
-        cc.debug.setDisplayStats(true);
-    }
 
  
     /**

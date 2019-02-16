@@ -2,12 +2,15 @@ require('libs/weapp-adapter/index');
 var Parser = require('libs/xmldom/dom-parser');
 window.DOMParser = Parser.DOMParser;
 require('libs/wx-downloader.js');
-require('src/settings.75dad');
+require('src/settings.eb942');
 var settings = window._CCSettings;
 var SubPackPipe = require('./libs/subpackage-pipe');
-require('main.6bd5b');
-require(settings.debug ? 'cocos2d-js.js' : 'cocos2d-js-min.69203.js');
+require('main.0fae2');
+require(settings.debug ? 'cocos2d-js.js' : 'cocos2d-js-min.dfef8.js');
 require('./libs/engine/index.js');
+
+// Adjust devicePixelRatio
+cc.view._maxPixelRatio = 3;
 
 wxDownloader.REMOTE_SERVER_ROOT = "https://minigame-1257126548.cos.ap-chengdu.myqcloud.com/ILickLink";
 wxDownloader.SUBCONTEXT_ROOT = "";

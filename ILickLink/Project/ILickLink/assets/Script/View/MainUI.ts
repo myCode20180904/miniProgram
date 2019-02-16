@@ -5,6 +5,7 @@ import { UserManager } from "../manager/UserManager";
 import { Util } from "../Define/Util";
 import { WXManager } from "../Tool/wx/wxApi";
 import { CommonHandel } from "../Define/CommonParam";
+import { LLXManager } from "../Game_LLX/LLXManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -12,6 +13,8 @@ export class MainUI extends BaseUI {
 
     @property(cc.Label)
     lb_name:cc.Label = null;
+    @property(cc.Label)
+    lb_gold:cc.Label = null;
     @property(cc.Node)
     headIcon:cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
@@ -30,13 +33,17 @@ export class MainUI extends BaseUI {
 
     start () {
         this.node.on(cc.Node.EventType.TOUCH_START,function(){},this);
+        //
+        this.refreshUI();
     }
 
     public refreshUI(){
         //name
         this.lb_name.string = UserManager.Instance.getUserInfo().nickName;
+        this.lb_gold.string = UserManager.Instance.getUserInfo().gold.toString();
         //图片
         Util.loadHttpIcon(this.headIcon,UserManager.Instance.getUserInfo().avatarUrl,null);
+        
     }
 
      /**
@@ -67,7 +74,7 @@ export class MainUI extends BaseUI {
      * 关闭
      */
     private starLLX(){
-        UIManager.Instance.openWindow('LLXLayer'); 
+        LLXManager.Instance.enterGame();
     }
     /**
      * 排行
@@ -82,15 +89,22 @@ export class MainUI extends BaseUI {
         var that = this;
         const handel = new CommonHandel();
         handel.success = function(){
-            
+            console.info("share success");
         };
-        handel.fail = function(){};
+        handel.fail = function(){
+            console.info("share fail");
+        };
         handel.complete = function(){
-
+            console.info("share complete");
         };
+        //获取关卡等级
+        if(!cc.sys.localStorage.getItem('llx_gateLevel')){
+            cc.sys.localStorage.setItem('llx_gateLevel', 1);
+        }
+        let level = parseInt(cc.sys.localStorage.getItem('llx_gateLevel'));
         //弹出微信分享
         WXManager.Instance.share({
-            title:'一起来连线',
+            title:'我已经到达'+level+"关，快来超越我吧！",
             imageUrl:''+UserManager.Instance.getUserInfo().avatarUrl,
             query:`sharetype=1&sharekey=${UserManager.Instance.getUserInfo().openid}`
         },handel);

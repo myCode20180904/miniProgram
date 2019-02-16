@@ -2,6 +2,7 @@ import { BaseUI} from "./BaseUI";
 import { UIManager} from "../manager/UIManager";
 import { Logger } from "../Tool/Logger";
 import { UserManager } from "../manager/UserManager";
+import { WXManager, WX_OpenData } from "../Tool/wx/wxApi";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -11,6 +12,9 @@ export class RankUI extends BaseUI {
     rankScroll: cc.Node = null;
     @property(cc.Node)
     rankItem: cc.Node = null;
+
+    //
+    private ranklist:Array<any> = [];
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -20,8 +24,17 @@ export class RankUI extends BaseUI {
     
 
     start () {
-        this.node.on(cc.Node.EventType.TOUCH_START,function(){},this);
-        this.refreshUI();
+        // this.node.on(cc.Node.EventType.TOUCH_START,function(){},this);
+        // this.refreshUI();
+        WXManager.Instance.openDataContent();
+        //从子域获取最新排行信息
+        let wx_OpenData = new WX_OpenData("getFriendCloudStorage")
+        wx_OpenData.res = {
+            nickName:UserManager.Instance.getUserInfo().nickName,
+            openId:UserManager.Instance.getUserInfo().openid
+        };
+        WXManager.Instance.sendMessageToChild(wx_OpenData);
+
     }
 
     public refreshUI(){
@@ -108,6 +121,7 @@ export class RankUI extends BaseUI {
      */
     private close(){
         UIManager.Instance.closeWindow('RankUI');
+        WXManager.Instance.closeDataContent();
     }
 
     // update (dt) {}
@@ -117,7 +131,7 @@ export class RankUI extends BaseUI {
     }
     public onHide(){
         Logger.info('RankUI onHide');
-        
+        WXManager.Instance.closeDataContent();
     }
 
     /**

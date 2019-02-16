@@ -35,10 +35,7 @@ var binary_format = [
 
 const REGEX = /^\w+:\/\/.*/;
 
-// has sub domain
-var isSubdomain = !wx.getFileSystemManager;
-
-var fs = isSubdomain ? {} : wx.getFileSystemManager();
+var fs = wx.getFileSystemManager ? wx.getFileSystemManager() : {};
 
 var _newAssets = [];
 var WXDownloader = window.WXDownloader = function () {
@@ -71,7 +68,7 @@ WXDownloader.prototype.handle = function (item, callback) {
         }
     }
 
-    if (isSubdomain) {
+    if (CC_WECHATGAMESUB) {
         if (REGEX.test(item.url)) {
             callback(null, null);
             return;
@@ -207,8 +204,28 @@ function readText (item, callback) {
         filePath: url,
         encoding: encodingFormat,
         success: function (res) {
-            item.states[cc.loader.downloader.id] = cc.Pipeline.ItemState.COMPLETE;
-            callback(null, res.data);
+            var queue = cc.LoadingItems.getQueue(item);
+            queue.addListener(item.id, function (item) {
+                if (item.error) {
+                    fs.unlink({
+                        filePath: url,
+                        success: function () {
+                            cc.log('Load failed, removed local file ' + url + ' successfully!');
+                        }
+                    });
+                }
+            });
+            
+            if (res.data) {
+                item.states[cc.loader.downloader.id] = cc.Pipeline.ItemState.COMPLETE;
+                callback(null, res.data);
+            }
+            else {
+                callback({
+                    status: 0,
+                    errorMessage: "Empty file: " + url
+                });
+            }
         },
         fail: function (res) {
             cc.warn('Read file failed: ' + url);
@@ -293,14 +310,7 @@ function downloadRemoteFile (item, callback) {
     wx.downloadFile({
         url: remoteUrl,
         success: function (res) {
-            if (res.statusCode === 404) {
-                cc.warn("Download file failed: " + remoteUrl);
-                callback({
-                    status: 0,
-                    errorMessage: res && res.errMsg ? res.errMsg : "Download file failed: " + remoteUrl
-                });
-            }
-            else if (res.tempFilePath) {
+            if (res.statusCode === 200 && res.tempFilePath) {
                 // http reading is not cached
                 var temp = res.tempFilePath;
                 var localPath = wx.env.USER_DATA_PATH + '/' + relatUrl;
@@ -335,9 +345,18 @@ function downloadRemoteFile (item, callback) {
                     });
                 });
             }
+            else {
+                cc.warn("Download file failed: " + remoteUrl);
+                callback({
+                    status: 0,
+                    errorMessage: res && res.errMsg ? res.errMsg : "Download file failed: " + remoteUrl
+                });
+            }
         },
         fail: function (res) {
             // Continue to try download with downloader, most probably will also fail
+            console.warn(res && res.errMsg ? res.errMsg : 'Download file failed: ' + remoteUrl);
+            // downloadRemoteFile(item, callback)
             callback({
                 status: 0,
                 errorMessage: res && res.errMsg ? res.errMsg : "Download file failed: " + remoteUrl

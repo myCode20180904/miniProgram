@@ -47,10 +47,18 @@ export class LoginUI extends BaseUI {
      * 显示登陆按钮
      */
     public showLogin(){
-        this.loginBtn.active = true;
-        this.bar.node.active = false;
-        this.tip.string = `点击进入游戏`;
-        this.node.getChildByName("background").getComponent(cc.Button).interactable = true;
+        if(window['wx']){
+            this.bar.node.active = false;
+            this.tip.string = `点击进入游戏`;
+            this.node.getChildByName("background").getComponent(cc.Button).interactable = true;
+            this.login();
+        }else{
+            this.loginBtn.active = true;
+            this.bar.node.active = false;
+            this.tip.string = `点击进入游戏`;
+            this.node.getChildByName("background").getComponent(cc.Button).interactable = true;
+        }
+        
     }
     /**
      * 显示加载进度
@@ -73,15 +81,17 @@ export class LoginUI extends BaseUI {
                     UserManager.Instance.getUserInfo().nickName = res.userInfo.nickName;
                     UserManager.Instance.getUserInfo().gender = res.userInfo.gender;
                     UserManager.Instance.getUserInfo().avatarUrl = res.userInfo.avatarUrl;
+
+                    UserManager.Instance.isLogin = true;
                     //获取微信openid
-                    WXManager.Instance.getWxOpenID({
-                        code:UserManager.Instance.getUserInfo().code,
-                        success:function(wxUserInfo:any){
-                            Logger.info("获取到的微信用户信息",wxUserInfo);
-                            UserManager.Instance.getUserInfo().openid = res.openid;
-                            that.bindOpenIDWithUserID(wxUserInfo.data);
-                        }
-                    })
+                    // WXManager.Instance.getWxOpenID({
+                    //     code:UserManager.Instance.getUserInfo().code,
+                    //     success:function(wxUserInfo:any){
+                    //         Logger.info("获取到的微信用户信息",wxUserInfo);
+                    //         UserManager.Instance.getUserInfo().openid = res.openid;
+                    //         that.bindOpenIDWithUserID(wxUserInfo.data);
+                    //     }
+                    // })
                 }
             ));
         }else{
@@ -188,7 +198,7 @@ export class LoginUI extends BaseUI {
         Logger.info("显示微信授权按钮")
         var that = this;
         //按钮图片
-        let url =  GameConfig.imageUrl + "weixinshouquan.png";
+        let url =  GameConfig.imageUrl + "/wxLoginMax.png";
 
         if(that.wx_button){
             that.wx_button.show();
@@ -198,8 +208,8 @@ export class LoginUI extends BaseUI {
                 success(res){
                     var width = res.screenWidth;
                     var height = res.screenHeight;
-                    var btWidth = 172; //这里只是简单的认为Dpr 2.2
-                    var btHeight = 52;
+                    var btWidth = res.screenWidth; //这里只是简单的认为Dpr 2.2
+                    var btHeight = res.screenHeight;
 
                     that.wx_button = wx.createUserInfoButton({
                         type: "image",
