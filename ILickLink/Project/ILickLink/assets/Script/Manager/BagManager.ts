@@ -30,7 +30,7 @@ export class BagManager {
      * 初始装备配置信息 并存入字典
      */
     public initEquipConfig(){
-        let config = LoadManager.Instance.configs['equip'];
+        let config = LoadManager.Instance.getJsonConfig('equip');
         if(!config){
             Logger.error("读取装备配置失败");
             return;
@@ -46,7 +46,7 @@ export class BagManager {
      * 初始装备配置信息 并存入字典
      */
     public initItemConfig(){
-        let config = LoadManager.Instance.configs['item'];
+        let config = LoadManager.Instance.getJsonConfig('item');
         if(!config){
             Logger.error("读取装备配置失败");
             return;

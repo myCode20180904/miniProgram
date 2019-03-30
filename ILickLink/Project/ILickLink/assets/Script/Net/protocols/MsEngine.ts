@@ -1,5 +1,5 @@
 import { Logger } from "../../Tool/Logger";
-import { UserManager } from "../../manager/UserManager";
+import { UserManager } from "../../Manager/UserManager";
 import { GenerateUUID } from "../../Define/CommonParam";
 import { GameConfig } from "../../Define/GameConfig";
 

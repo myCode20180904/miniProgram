@@ -1,4 +1,4 @@
-import { BagManager } from "../manager/BagManager";
+import { BagManager } from "../Manager/BagManager";
 import { CS_Packet, SC_Packet } from "./MsgPacket";
 
 

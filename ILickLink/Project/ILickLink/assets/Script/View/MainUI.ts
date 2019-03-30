@@ -1,11 +1,12 @@
 import { BaseUI} from "./BaseUI";
-import { UIManager} from "../manager/UIManager";
+import { UIManager} from "../Manager/UIManager";
 import { Logger } from "../Tool/Logger";
-import { UserManager } from "../manager/UserManager";
+import { UserManager } from "../Manager/UserManager";
 import { Util } from "../Define/Util";
 import { WXManager } from "../Tool/wx/wxApi";
 import { CommonHandel } from "../Define/CommonParam";
 import { LLXManager } from "../Game_LLX/LLXManager";
+import { LoadManager } from "../Manager/LoadManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -42,7 +43,7 @@ export class MainUI extends BaseUI {
         this.lb_name.string = UserManager.Instance.getUserInfo().nickName;
         this.lb_gold.string = UserManager.Instance.getUserInfo().gold.toString();
         //图片
-        Util.loadHttpIcon(this.headIcon,UserManager.Instance.getUserInfo().avatarUrl,null);
+        LoadManager.Instance.loadHttpIcon(this.headIcon,UserManager.Instance.getUserInfo().avatarUrl,null);
         
     }
 
@@ -114,7 +115,7 @@ export class MainUI extends BaseUI {
      * 测试界面
      */
     private test(){
-        UIManager.Instance.openWindow("TestUI");
+        UIManager.Instance.openWindow("TestScrollView");
     }
 
     /**

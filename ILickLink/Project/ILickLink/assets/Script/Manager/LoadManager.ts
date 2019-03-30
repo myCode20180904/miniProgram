@@ -1,10 +1,7 @@
 
-import { CommonHandel, LoadHandel} from "../Define/CommonParam";
-import { GameConfig,LoginType,GameLoginType} from "../Define/GameConfig";
+import { LoadHandel} from "../Define/CommonParam";
 import { WXManager} from "../Tool/wx/wxApi";
 import { Logger } from "../Tool/Logger";
-import { LoginUI } from "../View/LoginUI";
-import { UIManager } from "./UIManager";
 /**
  * LoadManager  加载资源管理
  */
@@ -21,11 +18,15 @@ export class LoadManager {
     private loadhandel:LoadHandel = null;
     private loadView:cc.Node = null;
     //加载的配置文件
-    public configs:{ [key: string]: any} = {};
-    //加载的骨骼动画
-    public skeletons:{ [key: string]: any} = {};
+    private json_deps:Array<string> = [];
     //加载的音乐文件
-    public audios:{ [key: string]: any} = {};
+    private audio_deps:Array<string> = [];
+    //预制件
+    private prefab_deps:Array<string> = [];
+    //图片纹理
+    private texture_deps:Array<string> = [];
+    private spriteFrame_deps:Array<string> = [];
+    //字体
 	public constructor() {
         this.init();
     }
@@ -36,34 +37,165 @@ export class LoadManager {
 
     }
 
+    getSkeleton(key:string):sp.SkeletonData{
+        return cc.loader.getRes('spine/'+key,sp.SkeletonData);
+    }
+    /**
+     * 获取json配置文件
+     * @param key 
+     */
+    getJsonConfig(key:string):any{
+        return cc.loader.getRes('json/'+key,cc.JsonAsset).json;
+    }
+    /**
+     * 获取音乐
+     * @param key 
+     */
+    getAudio(key:string):cc.AudioClip{
+        return cc.loader.getRes('audio/'+key,cc.AudioClip);
+    }
+    /**
+     * 获取预制件
+     * @param key 
+     */
+    getPrefab(key:string):cc.Prefab{
+        return cc.loader.getRes('view/'+key,cc.Prefab);
+    }
+    async getPrefabAsync(key:string):Promise<any>{
+        let catch_prefab:cc.Prefab = cc.loader.getRes('view/'+key,cc.Prefab);
+        if(catch_prefab){
+            return new Promise((resolve, reject) => {
+                resolve(catch_prefab)
+            })
+        }else{
+            // 加载 Prefab
+            return new Promise((resolve, reject) => {
+                let onLoad = function(err, prefab:cc.Prefab){
+                    if(err){
+                        reject(err);
+                        return;
+                    }
+                    resolve(prefab);
+                }
+                cc.loader.loadRes('view/'+key,cc.Prefab,onLoad);
+            })
+        }  
+        
+    }
+    /**
+     * 获取SpriteFrame
+     * @param key 
+     */
+    getSpriteFrame(key:string):cc.SpriteFrame{
+        let spriteFrame = null;
+        //图集缓存中查找
+        let c_atlas = cc.loader.getRes('texture/ResAtlas',cc.SpriteAtlas);
+        if(c_atlas){
+            spriteFrame = c_atlas.getSpriteFrame(key);
+            if(spriteFrame){
+                return spriteFrame;
+            }else{
+                return cc.loader.getRes('texture/'+key,cc.SpriteFrame);
+            }
+            
+        }
+        return spriteFrame;
+    }
+    /**
+     * 释放所有
+     */
+    releaseAll(){
+
+    }
+    /**
+     * 释放所有纹理
+     */
+    releaseAllTexture(){
+        Logger.info('释放所有纹理');
+        
+        cc.sys.garbageCollect();
+    }
+    /**
+     * 释放所有音频
+     */
+    releaseAllAudio(){
+        Logger.info('释放所有音频',this.audio_deps);
+        for (let index = 0; index < this.audio_deps.length; index++) {
+            cc.loader.release(this.audio_deps[index]);
+        }
+        this.audio_deps.splice(0,this.audio_deps.length);
+        cc.sys.garbageCollect();
+    }
+    /**
+     * 释放所有json配置
+     */
+    releaseAllJsonConfig(){
+        Logger.info('释放所有json配置',this.json_deps);
+        for (let index = 0; index < this.json_deps.length; index++) {
+            cc.loader.release(this.json_deps[index]);
+        }
+        this.json_deps.splice(0,this.json_deps.length);
+        cc.sys.garbageCollect();
+    }
+
+    /**
+     * 释放所有动态加载的图片
+     */
+    releaseAllTempIcon(){
+        Logger.info('释放所有动态加载的图片',this.tempIcon_deps);
+        for (let index = 0; index < this.tempIcon_deps.length; index++) {
+            cc.loader.release(this.tempIcon_deps[index]);
+        }
+        this.tempIcon_deps.splice(0,this.tempIcon_deps.length);
+    }
+    
+    /**
+     * 释放一批资源
+     */
+    releaseRes(urls:Array<string>){
+        Logger.info(' 释放一批预制件',urls);
+        for (let index = 0; index < urls.length; index++) {
+            cc.loader.release(urls[index]);
+        }
+    }
+
+    /**
+     * 预先加载启动页面
+     * @param handel 
+     */
+    public preLoadRes(handel:LoadHandel){
+        cc.loader.loadResArray(['view/LoginUI','view/nodes/BackGround'],function(){
+            handel.complete();
+        })
+    }
     /**
      * 加载资源
      */
-    public async loadRes(handel:LoadHandel,loadv?:cc.Node): Promise<any>{
+    public loadRes(handel:LoadHandel,loadv?:cc.Node){
         this.loadhandel = handel;
         if(loadv){
             this.loadView = loadv;
         }
         this.showLoadView();
-       
+        //预加载
+        // for(let r of GameConfig.beforeLoadRes){
+        //     await LoadAsync.getRes(r).load();
+        // }
         var that = this;
-        return new Promise((resolve, reject) => {
-            that.doLoadRes({
-                success:function(){
-                    Logger.info('LoadManager 资源加载完成');
-                    that.hideLoadView();
-                    that.loadhandel.complete();
-                    resolve();
-                }
-            });
-        })
+        that.loadResRemote({
+            success:function(){
+                Logger.info('LoadManager 资源加载完成');
+                that.hideLoadView();
+                that.loadhandel.complete();
+            }
+        });
     }
 
     /**
      * 提前加载本地资源
      * @param {*} obj 
      */
-    private async doLoadRes(obj){
+    private loadResRemote(obj){
         this.loadResLocal(obj,"./");
         
     }
@@ -88,7 +220,7 @@ export class LoadManager {
                 for (const asset of assets) {
                     let assetType:string = asset.__classname__;
                     if(assetType == 'cc.JsonAsset'){
-                        that.configs[asset.name] = asset.json;
+                        that.json_deps = that.json_deps.concat(cc.loader.getDependsRecursively(asset));
                     }else if(assetType == 'cc.SpriteFrame'){
                         
                     }else if(assetType == 'cc.TTFFont'){
@@ -96,18 +228,48 @@ export class LoadManager {
                     }else if(assetType == 'cc.Texture2D'){
                         
                     }else if(assetType == 'sp.SkeletonData'){
-                        //spine动画
-                        that.skeletons[asset.name] = asset;
                     }else if(assetType == 'cc.AudioClip'){
-                        that.audios[asset.name] = asset;
-                    }else{
-
+                        that.audio_deps = that.audio_deps.concat(cc.loader.getDependsRecursively(asset));
+                    }else if(assetType == 'cc.Prefab'){
+                        
                     }
                     
                 }
                 obj.success();
             }
         );
+    }
+
+    private tempIcon_deps:Array<string> = [];
+    /**
+     * 精灵动态加载网络图片
+     * @param container 
+     * @param _iconUrl 
+     * @param _callfunc 
+     */
+    public loadHttpIcon(container, _iconUrl, _callfunc) {
+        if (!_iconUrl || _iconUrl == "") {
+            _iconUrl = "http://thirdwx.qlogo.cn/mmopen/vi_32/opmkDJhG2jpF8X8AfFQfTauRlpBc7VeFicJevZ9IiajEl5g4ia75opNSZOb0FvDV87BvpUN1rsyctibGnicP7uibsMtw/132"
+        }
+        var that = this;
+        //缓存中查找
+        let c_texture = cc.loader.getRes(_iconUrl,cc.Texture2D);
+        if(c_texture){
+            container.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame(c_texture);
+            if (_callfunc) {
+                _callfunc()
+            }
+            return;
+        }
+        //动态加载
+        cc.loader.load({ url: _iconUrl, type: 'png' }, function (err, tex:cc.Texture2D) {
+            var spriteFrame = new cc.SpriteFrame(tex)
+            container.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+            if (_callfunc) {
+                _callfunc()
+            }
+            that.tempIcon_deps.push(_iconUrl);
+        });
     }
 
     /**
@@ -163,11 +325,7 @@ export class LoadManager {
         }
     }
     private processLoadView(completedCount,totalCount){
-        // Logger.info("加载本地资源:",`完成度:${completedCount}/${totalCount}`);
-        let loginUI:LoginUI = UIManager.Instance.findComponent("LoginUI");
-        if(loginUI){
-            loginUI.showProcess(Math.floor(completedCount/totalCount)*100);
-        }
+        this.loadhandel.process(completedCount,totalCount);
     }
 	
 }

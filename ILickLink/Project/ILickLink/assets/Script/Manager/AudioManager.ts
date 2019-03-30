@@ -84,7 +84,7 @@ export class AudioManager{
         if(!this._sound_on){
             return;
         }
-        this.current = cc.audioEngine.play(LoadManager.Instance.audios[name], false, 1);
+        this.current = cc.audioEngine.play(LoadManager.Instance.getAudio(name), false, 1);
     }
     /**
      * 关闭音效
@@ -100,7 +100,7 @@ export class AudioManager{
         if(!this._music_on){
             return;
         }
-        cc.audioEngine.playMusic(LoadManager.Instance.audios[name],true);
+        cc.audioEngine.playMusic(LoadManager.Instance.getAudio(name),true);
     }
     /**
      * 播放背景音乐

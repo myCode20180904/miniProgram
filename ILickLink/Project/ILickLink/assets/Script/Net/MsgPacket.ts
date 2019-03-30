@@ -1,5 +1,5 @@
 import { ErrorType, ErrorLang } from "../Define/ErrorLang";
-import { UserManager } from "../manager/UserManager";
+import { UserManager } from "../Manager/UserManager";
 import { Logger } from "../Tool/Logger";
 
 /**

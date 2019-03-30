@@ -18,7 +18,9 @@ export enum ShaderType {
     Dissolve,
     Fluxay,
     FluxaySuper,
-    Streamer
+    Streamer,
+    HighLight,
+    OutGlow
     
 }
 

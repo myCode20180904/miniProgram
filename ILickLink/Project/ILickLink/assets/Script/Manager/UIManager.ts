@@ -1,8 +1,8 @@
 
-import { BaseUI} from "../View/BaseUI";
 import { AudioManager, AudioType } from "./AudioManager";
 import { Logger } from "../Tool/Logger";
 import { Toast } from "../View/Toast";
+import { LoadManager } from "./LoadManager";
 
 /**
  * 界面管理
@@ -25,13 +25,12 @@ export class UIManager {
 		}
 		return this.instance;
     }
-    
-    //ui 池
-    private uiPool:{ [key: string]: any} = {};
-    //ui 字典
-    private uiList:{ [key: string]: any} = {};
     //舞台根节点
     private rootNode:cc.Node = cc.find('Canvas');
+    //UI列表
+    private uiList:Array<string> = [];
+    //keep
+    private uiKeepList:Array<string> = [];
 
 	public constructor() {
         this.init();
@@ -43,94 +42,106 @@ export class UIManager {
 
     }
 
-    /**
-     * preLoadWindow 提前导入资源
-     */
-    public preLoadWindow(names:Array<string>){
-        var that = this;
-        for (const iterator of names) {
-            //如果加载过
-            if(that.uiPool[iterator]){
-                return ;
-            }
-            //加载
-            let file = 'view/'+iterator;
-            this.loadPrefab(file).then(prefab=>{
-                that.uiPool[iterator] = prefab;
-            }).catch(error=>{
-                Logger.info(error)
+   /**
+    * open window (可能回延时加载)
+    * @param key 
+    * @param zoder 
+    */
+    public async openWindow(key:string,zoder?:number):Promise<any>{
+        //
+        let prefab:cc.Prefab = LoadManager.Instance.getPrefab(key);
+        if(prefab){
+            //添加
+            this.addToRoot(prefab,key,zoder?zoder:0);
+            return new Promise((resolve, reject) => {
+                resolve()
+            })
+        }else{
+            var that = this;
+            return new Promise((resolve, reject) => {
+                LoadManager.Instance.getPrefabAsync(key).then(function(prefab:cc.Prefab){
+                    that.addToRoot(prefab,key,zoder?zoder:0);
+                    resolve();
+                })
             })
             
         }
-        
+    }
+    /**
+     * 添加一个新的窗口
+     * @param prefab 
+     * @param key 
+     * @param zoder 
+     */
+    private addToRoot(prefab:cc.Prefab,key:string,zoder:number):cc.Node{
+        Logger.info('openWindow:',key);
+        if(this.uiList.indexOf(key)>=0){
+            this.closeWindow(key);
+        }
+         //添加
+         var node = cc.instantiate(prefab);
+         this.rootNode.addChild(node,zoder);
+         this.show(key);
+         this.uiList.push(key);
+         return node;
+    }
+    //预制名称
+    private getCompName(key:string):string{
+        let atrArr = key.split('/');
+        return atrArr[atrArr.length-1];
     }
 
-    /**
-     * open window 支持异步加载
-     */
-    public async openWindow(name:string,zoder?:number){
-        var that = this;
-        let file = 'view/'+name;
-        //如果加载过，直接从池子里面取
-        if(that.uiPool[name]){
-            //添加
-            that.addNew(name,zoder?zoder:0);
-            return ;
+    private show(key:string){
+        AudioManager.Instance.playEff(AudioType.EFF_OpenWindow)
+        let name = this.getCompName(key);
+        let comp = this.rootNode.getChildByName(name).getComponent(name);
+        if(comp['addFlowBg']){
+            comp.addFlowBg();
         }
-        //加载
-        let async_prefab = await this.loadPrefab(file).then(prefab=>{
-           return prefab;
-        }).catch(error=>{
-            Logger.info(error)
-        })
-        that.uiPool[name] = async_prefab;
-        //添加
-        that.addNew(name,zoder?zoder:0);
+        if(comp['onShow']){
+            comp.onShow();
+        }
+        comp.enabled = true;
+    }
 
+    private hide(key:string){
+        AudioManager.Instance.playEff(AudioType.EFF_CloseWindow);
+        let name = this.getCompName(key);
+        let comp = this.rootNode.getChildByName(name).getComponent(name);
+        if(comp&&comp['onHide']){
+            comp.onHide();
+        }
+        comp.enabled = true;
     }
 
     /**
      * 创建一个预制件作为节点
      */
-    public async createPrefab(name:string): Promise<any>{
-        var that = this;
-        let file = 'view/nodes/'+name;
-        let node:cc.Node = null;
-        //如果加载过，直接从池子里面取
-        if(that.uiPool[name]){
-            node = cc.instantiate(that.uiPool[name]);
+    public createPrefab(key:string){
+        //
+        let prefab:cc.Prefab = LoadManager.Instance.getPrefab(key)
+        if(prefab){
+            return cc.instantiate(prefab);
         }else{
-             //加载
-            let async_prefab = await this.loadPrefab(file).catch(error=>{
-                Logger.info(error)
-            })
-            that.uiPool[name] = async_prefab;
-            //添加
-            node = cc.instantiate(that.uiPool[name]);
+            return null;
         }
-       
-        let comp = node.getComponent(name)
-        
-        return new Promise((resolve, reject) => {
-            resolve(comp)
-        })
     }
 
     /**
      * close window
-     * @param name 
+     * @param key 
      */
-    public closeWindow(name:string){
-        if(this.uiList[name]){
-            this.hide(name);
-            Logger.info('closeWindow:',name);
+    public closeWindow(key:string){
+        let node = this.findWindow(key);
+        if(node){
+            this.hide(key);
+            Logger.info('closeWindow:',key);
             //移除
-            this.rootNode.removeChild(this.uiList[name]);
-            this.uiList[name].destroy();
-            delete this.uiList[name];
-
+            node.removeFromParent();
+            node.destroy();
+            this.uiList.splice(this.uiList.indexOf(key),1)
         }else{
-            Logger.info('closeWindow:',name,'not found');
+            Logger.info('closeWindow fail:',key,'not found');
         }
     }
 
@@ -139,12 +150,9 @@ export class UIManager {
      */
     public closeAllWindow(){
         Logger.info("closeAllWindow:");
-        for(let key in this.uiList){
-            if(this.uiList[key]){
-                this.rootNode.removeChild(this.uiList[key],true);
-                this.uiList[key].destroy();
-                delete this.uiList[key];
-            }
+        for (let index = 0; index < this.uiList.length; index++) {
+            this.closeWindow(this.uiList[index]);
+            
         }
     }
     
@@ -167,84 +175,34 @@ export class UIManager {
     
     /**
      * find Window
-     * @param name 
+     * @param key 
      */
-    public findWindow(name:string):cc.Node{
-        return this.uiList[name];
+    public findWindow(key:string):cc.Node{
+        let name = this.getCompName(key);
+        return this.rootNode.getChildByName(name);
     }
     
     /**
      * find Component
-     * @param name 
+     * @param key 
      */
-    public findComponent(name:string):any{
-        if(this.uiList[name]){
-            return this.uiList[name].getComponent(name);
-        }
-        return null;
-    }
-
-    /**
-     * 添加一个新的窗口
-     * @param name 
-     */
-    private addNew(name:string,zoder:number):cc.Node{
-        Logger.info('openWindow:',name);
-        if(this.uiList[name]){
-            this.closeWindow(name);
-        }
-        if(!this.uiPool[name]){
+    public findComponent(key:string):any{
+        let name = this.getCompName(key);
+        let node = this.findWindow(key);
+        if(node){
+            return node.getComponent(name);
+        }else{
             return null;
         }
-         //添加
-         var node = cc.instantiate(this.uiPool[name]);
-         this.rootNode.addChild(node,zoder);
-         this.uiList[name] = node;
-         this.show(name);
-         return node;
+        
     }
 
-    private show(name:string){
-        AudioManager.Instance.playEff(AudioType.EFF_OpenWindow)
-        let comp = this.uiList[name].getComponent(name)
-        if(comp['addFlowBg']){
-            comp.addFlowBg();
-        }
-        if(comp['onShow']){
-            comp.onShow();
-        }
-        comp.enabled = true;
-    }
-
-    private hide(name:string){
-        AudioManager.Instance.playEff(AudioType.EFF_CloseWindow);
-        let comp = this.uiList[name].getComponent(name)
-        if(comp&&comp['onHide']){
-            comp.onHide();
-        }
-        comp.enabled = true;
-    }
+    
     
      public async showToast(msg:string,dt:number = 2.0){
-        await this.openWindow("Toast");
+        this.openWindow("Toast");
         let toast:Toast = this.findComponent('Toast');
         toast.showMsg(msg,dt);
-     }
-    /**
-     * load 预置资源Prefab
-     */
-    public async loadPrefab(file:string): Promise<any>{
-        return new Promise((resolve, reject) => {
-            let onLoad = function(err, prefab){
-                if(err){
-                    reject(err);
-                    return;
-                }
-                resolve(prefab);
-            }
-
-            cc.loader.loadRes(file,onLoad);
-        })
     }
 	
 }

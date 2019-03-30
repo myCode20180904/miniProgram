@@ -1,7 +1,7 @@
 
 import { CommonHandel, LoadHandel} from "./Define/CommonParam";
-import { UIManager} from "./manager/UIManager";
-import { LoadManager } from "./manager/LoadManager";
+import { UIManager} from "./Manager/UIManager";
+import { LoadManager } from "./Manager/LoadManager";
 import { GameProto } from "./Net/protocols/GameProto";
 import { WXManager } from "./Tool/wx/wxApi";
 import { displaywxsub } from "./Tool/wx/displaywxsub";
@@ -36,27 +36,42 @@ export class LocalNode extends cc.Component {
         cc.debug.setDisplayStats(GAME_DEBUG);
     }
 
-    async start () {
+    start () {
         // 声明常驻根节点
         cc.game.addPersistRootNode(this.node);
 
-        //
-        await UIManager.Instance.openWindow('LoginUI');
-        await UIManager.Instance.openWindow("MainUI",-1)
-        await LoadManager.Instance.loadRes(new LoadHandel(
-            function(process:number){
+        var that = this;
+        LoadManager.Instance.preLoadRes(new LoadHandel(
+            function(){
 
             },
-            async function(){
+            function(){
+                that.enterFirstPage();
+            }
+        ));
+        
 
+    }
+
+    enterFirstPage(){
+        //
+        UIManager.Instance.openWindow('LoginUI');
+        LoadManager.Instance.loadRes(new LoadHandel(
+            function(completedCount,totalCount){
+                let loginUI:LoginUI = UIManager.Instance.findComponent("LoginUI");
+                if(loginUI){
+                    loginUI.showProcess(Math.floor(completedCount*100/totalCount));
+                }
+            },
+            function(){
+                let loginUI:LoginUI = UIManager.Instance.findComponent("LoginUI");
+                if(loginUI){
+                    loginUI.showLogin();
+                }
                 
             }
         ));
-        let loginUI:LoginUI = UIManager.Instance.findComponent("LoginUI");
-        if(loginUI){
-            loginUI.showLogin();
-        }
-
+        
     }
 
 

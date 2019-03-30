@@ -1,7 +1,7 @@
-import { LoadManager } from "../manager/LoadManager";
+import { LoadManager } from "../Manager/LoadManager";
 import { Logger } from "../Tool/Logger";
 import { WX_OpenData, WXManager } from "../Tool/wx/wxApi";
-import { UIManager } from "../manager/UIManager";
+import { UIManager } from "../Manager/UIManager";
 
 /**
  * FighterFactor 战斗角色管理工厂
@@ -42,7 +42,7 @@ export class LLXManager {
         if(gateid>161){
             gateid = Math.floor(Math.random()*10)+1;
         }
-        let config = LoadManager.Instance.configs['gate'+gateid];
+        let config = LoadManager.Instance.getJsonConfig('llxgates/gate'+gateid);
         if(!config){
             Logger.error("读取物配置信息失败");
             return;
@@ -70,7 +70,7 @@ export class LLXManager {
      * 进入游戏
      */
     public enterGame(){
-        UIManager.Instance.openWindow('LLXLayer');
+        UIManager.Instance.openWindow('LLX/LLXLayer');
         UIManager.Instance.closeWindow("RankUI")
         UIManager.Instance.closeWindow("MainUI")
     }
@@ -80,16 +80,16 @@ export class LLXManager {
     public exitGame(){
         UIManager.Instance.openWindow("MainUI",-1);
         UIManager.Instance.openWindow("RankUI",-1)
-        UIManager.Instance.closeWindow('LLXLayer');
+        UIManager.Instance.closeWindow('LLX/LLXLayer');
         this.clear();
     }
     /**
      * 重来
      */
     public restartGame(){
-        UIManager.Instance.closeWindow('LLXLayer');
+        UIManager.Instance.closeWindow('LLX/LLXLayer');
         this.clear();
-        UIManager.Instance.openWindow('LLXLayer');
+        UIManager.Instance.openWindow('LLX/LLXLayer');
     }
     /**
      * clear

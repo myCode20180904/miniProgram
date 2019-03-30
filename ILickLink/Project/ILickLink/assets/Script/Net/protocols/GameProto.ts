@@ -1,9 +1,9 @@
 import { HttpHandler } from "../HttpHandel";
 import { SC_Packet, CS_Packet,CS_UserLogin,SC_UserLogin, ProtoBase, CS_GetPlayerData, SC_SynPlayerData, SC_GetPlayerData, CS_SynPlayerData, CS_AllRank, SC_AllRank, CS_DayRank, CS_CombatRank, SC_DayRank, SC_CombatRank, SC_CheckRankAward, CS_GetShareAward, SC_GetShareAward } from "../MsgPacket";
-import { UserManager } from "../../manager/UserManager";
-import { RankManager } from "../../manager/RankManager";
+import { UserManager } from "../../Manager/UserManager";
+import { RankManager } from "../../Manager/RankManager";
 import { CS_GetItemList, SC_GetItemList, CS_WearEquip, SC_WearEquip, CS_UpGradeEquip, SC_UpGradeEquip, CS_ShopBuyInfo, SC_ShopBuyInfo, CS_OpenBox, SC_OpenBox } from "../BagPacket";
-import { BagManager } from "../../manager/BagManager";
+import { BagManager } from "../../Manager/BagManager";
 import { Logger } from "../../Tool/Logger";
 
 export class GameProto extends ProtoBase {
@@ -132,7 +132,7 @@ export class GameProto extends ProtoBase {
      */
     public handleAllRank(message:SC_AllRank){
         Logger.info("收到服务器返回总排行榜信息：",message);
-        RankManager.Instance.refreshAllRank(message);
+        // RankManager.Instance.refreshAllRank(message);
     }
 
 
@@ -152,7 +152,7 @@ export class GameProto extends ProtoBase {
      */
     public handleDayRank(message:SC_DayRank){
         Logger.info("收到服务器返回日排行榜信息：",message);
-        RankManager.Instance.refreshDayRank(message);
+        // RankManager.Instance.refreshDayRank(message);
     }
 
 
@@ -171,7 +171,7 @@ export class GameProto extends ProtoBase {
      */
     public handleCombatRank(message:SC_CombatRank){
         Logger.info("收到服务器返回战力排行榜信息：",message);
-        RankManager.Instance.refreshCombatRank(message);
+        // RankManager.Instance.refreshCombatRank(message);
     } 
 
 

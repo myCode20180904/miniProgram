@@ -1,0 +1,12 @@
+<!--pages/addFunction/addFunction.wxml-->
+<view class="group">
+  <image class="image1" src="../../images/helloWorld/default-icon.jpg" mode="scaleToFill" style="width: 50px; height: 50px; background-color: #eeeeee;" bindtap="onAbout"> </image>
+
+  <scroll-view scroll-y style="height: 800px;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+  <block wx:for="{{words}}">
+    <text style="width: 500px; height: 500px; background-color: #ffffff;"> {{item}}</text>
+  </block>
+  </scroll-view>
+
+
+</view>

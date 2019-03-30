@@ -1,8 +1,8 @@
 import { GameConfig,LoginType,GameLoginType} from "../../Define/GameConfig";
 import { LocalNode} from "../../LocalNode";
 import { CommonHandel} from "../../Define/CommonParam";
-import { UserManager} from "../../manager/UserManager";
-import { UIManager} from "../../manager/UIManager";
+import { UserManager} from "../../Manager/UserManager";
+import { UIManager} from "../../Manager/UIManager";
 import { Logger } from "../Logger";
 import { LoginUI } from "../../View/LoginUI";
 

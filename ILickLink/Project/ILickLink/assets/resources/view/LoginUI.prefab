@@ -86,7 +86,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -155,7 +154,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -167,8 +165,6 @@
       "__id__": 2
     },
     "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
     "_spriteFrame": {
       "__uuid__": "4f131e61-a519-46a1-b98b-cd36a8e86ffb"
     },
@@ -185,6 +181,8 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_id": ""
   },
   {
@@ -366,7 +364,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -432,7 +429,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -444,8 +440,6 @@
       "__id__": 9
     },
     "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
     "_spriteFrame": {
       "__uuid__": "16b87424-05f2-4839-9633-09155454adb1"
     },
@@ -462,6 +456,8 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_id": ""
   },
   {
@@ -634,7 +630,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -697,7 +692,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -709,8 +703,6 @@
       "__id__": 16
     },
     "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
     "_spriteFrame": {
       "__uuid__": "67e68bc9-dad5-4ad9-a2d8-7e03d458e32f"
     },
@@ -727,6 +719,8 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_id": ""
   },
   {
@@ -748,8 +742,6 @@
       "__id__": 15
     },
     "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
     "_spriteFrame": {
       "__uuid__": "88e79fd5-96b4-4a77-a1f4-312467171014"
     },
@@ -766,6 +758,8 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_id": ""
   },
   {
@@ -855,7 +849,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -867,8 +860,6 @@
       "__id__": 22
     },
     "_enabled": true,
-    "_srcBlendFactor": 1,
-    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "资源加载中...    10%",
     "_N$string": "资源加载中...    10%",
@@ -885,6 +876,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
+    "_N$cacheMode": 0,
     "_id": ""
   },
   {
@@ -960,7 +952,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -972,8 +963,6 @@
       "__id__": 25
     },
     "_enabled": true,
-    "_srcBlendFactor": 1,
-    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "抵制不良游戏，拒绝盗版游戏。\n注意自我保护，谨防受骗上当。\n适度游戏益脑，沉迷游戏伤身。\n合理安排时间，享受健康生活。",
     "_N$string": "抵制不良游戏，拒绝盗版游戏。\n注意自我保护，谨防受骗上当。\n适度游戏益脑，沉迷游戏伤身。\n合理安排时间，享受健康生活。",
@@ -990,6 +979,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
+    "_N$cacheMode": 0,
     "_id": ""
   },
   {

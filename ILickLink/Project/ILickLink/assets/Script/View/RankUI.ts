@@ -1,8 +1,9 @@
 import { BaseUI} from "./BaseUI";
-import { UIManager} from "../manager/UIManager";
+import { UIManager} from "../Manager/UIManager";
 import { Logger } from "../Tool/Logger";
-import { UserManager } from "../manager/UserManager";
+import { UserManager } from "../Manager/UserManager";
 import { WXManager, WX_OpenData } from "../Tool/wx/wxApi";
+import { LoadManager } from "../Manager/LoadManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -82,7 +83,7 @@ export class RankUI extends BaseUI {
             item.setPosition(cc.v2(0, -index * oneHight - oneHight / 2));
 
             let head = item.getChildByName("head");
-            this.loadHttpIcon(head,element.avatarUrl,function(){});
+            LoadManager.Instance.loadHttpIcon(head,element.avatarUrl,function(){});
 
             let name = item.getChildByName("name").getComponent(cc.Label);
             name.string  = element.name;
@@ -132,25 +133,5 @@ export class RankUI extends BaseUI {
     public onHide(){
         Logger.info('RankUI onHide');
         WXManager.Instance.closeDataContent();
-    }
-
-    /**
-     * 精灵动态加载网络图片
-     * @param container 
-     * @param _iconUrl 
-     * @param _callfunc 
-     */
-    private loadHttpIcon(container, _iconUrl, _callfunc) {
-        if (!_iconUrl || _iconUrl == "") {
-            _iconUrl = "http://thirdwx.qlogo.cn/mmopen/vi_32/opmkDJhG2jpF8X8AfFQfTauRlpBc7VeFicJevZ9IiajEl5g4ia75opNSZOb0FvDV87BvpUN1rsyctibGnicP7uibsMtw/132"
-        }
-        cc.loader.load({ url: _iconUrl, type: 'png' }, function (err, tex) {
-            var spriteFrame = new cc.SpriteFrame(tex)
-            container.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-            if (_callfunc) {
-                _callfunc()
-            }
-            Logger.info('Should load a texture from RESTful API by specify the type: ' + (tex instanceof cc.Texture2D));
-        });
     }
 }

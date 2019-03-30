@@ -1,12 +1,12 @@
 import { BaseUI} from "../View/BaseUI";
-import { UIManager} from "../manager/UIManager";
+import { UIManager} from "../Manager/UIManager";
 import { Logger } from "../Tool/Logger";
 import { LLXManager } from "./LLXManager";
 import { LineDir, string2color, CommonHandel } from "../Define/CommonParam";
 import { WXManager } from "../Tool/wx/wxApi";
-import { UserManager } from "../manager/UserManager";
-import { UserInfo } from "../Define/UserType";
+import { UserManager } from "../Manager/UserManager";
 import { GameConfig } from "../Define/GameConfig";
+import { LoadManager } from "../Manager/LoadManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -259,10 +259,10 @@ export class LLXLayer extends BaseUI {
 
     //通关
     passGame(){
-        UIManager.Instance.closeWindow('LLXLayer');
+        UIManager.Instance.closeWindow('LLX/LLXLayer');
         LLXManager.Instance.clear();
         LLXManager.Instance.nextLevel();
-        UIManager.Instance.openWindow('LLXLayer');
+        UIManager.Instance.openWindow('LLX/LLXLayer');
     }
     //画网格
     private drawGrid(){
@@ -407,11 +407,11 @@ export class LLXLayer extends BaseUI {
         node.active = true;
         node.getComponent("line").pointColor = color;
         if(this.onedis_w>100){
-            node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame('texture/llx/40x100@2x');
+            node.getComponent(cc.Sprite).spriteFrame = LoadManager.Instance.getSpriteFrame('llx/40x100@2x');
         }else if(this.onedis_w>79){
-            node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame('texture/llx/30x100@2x');
+            node.getComponent(cc.Sprite).spriteFrame = LoadManager.Instance.getSpriteFrame('llx/30x100@2x');
         }else{
-            node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame('texture/llx/20x100@2x');
+            node.getComponent(cc.Sprite).spriteFrame = LoadManager.Instance.getSpriteFrame('llx/20x100@2x');
         }
     }
     //加点
@@ -428,11 +428,11 @@ export class LLXLayer extends BaseUI {
         node.active = true;
     
         if(this.onedis_w>100){
-            node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame('texture/llx/85x85@2x');
+            node.getComponent(cc.Sprite).spriteFrame = LoadManager.Instance.getSpriteFrame('llx/85x85@2x');
         }else if(this.onedis_w>79){
-            node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame('texture/llx/60x60@2x');
+            node.getComponent(cc.Sprite).spriteFrame = LoadManager.Instance.getSpriteFrame('llx/60x60@2x');
         }else{
-            node.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame('texture/llx/40x40@2x');
+            node.getComponent(cc.Sprite).spriteFrame = LoadManager.Instance.getSpriteFrame('llx/40x40@2x');
         }
     }
     //浅色路径

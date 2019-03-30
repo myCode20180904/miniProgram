@@ -1,0 +1,19 @@
+<!--pages/addFunction/addFunction.wxml-->
+<view class="container">
+
+  <view class="list">
+    <view class="list-item" bindtap="sayHello">
+      <text>hello</text>
+    </view>
+  </view>
+
+  <view class="guide">
+    <text class="headline">新手指引</text>
+    <text class="p">1. 巴拉巴拉</text>
+    <text class="p">2. 哇啊啊啊</text>
+    <image class="image1" src="../../images/helloWorld/default-icon.jpg" mode="aspectFit"></image>
+    <button class="copyBtn" wx:if="true" bindtap="copyCode">复制图像</button>
+   
+  </view>
+
+</view>

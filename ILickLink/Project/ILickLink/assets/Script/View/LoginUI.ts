@@ -1,12 +1,12 @@
 import { BaseUI} from "./BaseUI";
-import { UIManager} from "../manager/UIManager";
+import { UIManager} from "../Manager/UIManager";
 import { Logger } from "../Tool/Logger";
 import { MsEngine } from "../Net/protocols/MsEngine";
 import { WXManager } from "../Tool/wx/wxApi";
 import { CommonHandel } from "../Define/CommonParam";
-import { UserManager } from "../manager/UserManager";
+import { UserManager } from "../Manager/UserManager";
 import { GameConfig } from "../Define/GameConfig";
-import { AudioManager, AudioType } from "../manager/AudioManager";
+import { AudioManager, AudioType } from "../Manager/AudioManager";
 import { MD5 } from "../Tool/md5";
 const {ccclass, property} = cc._decorator;
 

@@ -339,6 +339,53 @@ const ShaderLab = {
             }
         }
         `
+    },
+    HighLight:{//高光
+        vert: MVP,
+        frag:
+        `
+        uniform sampler2D texture;
+        uniform vec4 color;
+        uniform float time;
+        varying vec2 uv0;
+        void main()
+        {
+            vec4 src_color = color * texture2D(texture, uv0).rgba;
+            float gray = dot(src_color.rgb, vec3(0.8, 0.9, 0.85));
+            gl_FragColor = vec4(src_color.r+0.08, src_color.g+0.08, src_color.b+0.08, src_color.a+0.015);
+            
+        }
+        `
+    },
+    OutGlow:{//外发光
+        vert: MVP,
+        frag:
+        `
+        uniform sampler2D texture;
+        uniform vec4 color;
+        uniform float time;
+        varying vec2 uv0;
+        void main()
+        {
+            vec4 src_color = color * texture2D(texture, uv0).rgba;
+            
+            
+        }
+        `
+    },
+    CirclePortraitFrag:{//
+        vert: MVP,
+        frag:
+        `
+        uniform sampler2D texture;
+        uniform vec4 color;
+        uniform float time;
+        varying vec2 uv0;
+        void main()
+        {
+            
+        }
+        `
     }
 
 };

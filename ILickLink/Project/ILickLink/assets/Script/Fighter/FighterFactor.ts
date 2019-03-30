@@ -1,5 +1,5 @@
-import { UIManager} from "../manager/UIManager";
-import { LoadManager } from "../manager/LoadManager";
+import { UIManager} from "../Manager/UIManager";
+import { LoadManager } from "../Manager/LoadManager";
 import { Logger } from "../Tool/Logger";
 import { Monster } from "./Monster";
 import { Player } from "./player";
@@ -74,7 +74,7 @@ export class FighterFactor {
      * 初始怪物配置信息 并存入字典
      */
     private initMonsterConfig(){
-        let config = LoadManager.Instance.configs['monster'];
+        let config = LoadManager.Instance.getJsonConfig('monster');
         if(!config){
             Logger.error("读取物配置信息失败");
             return;
@@ -89,7 +89,7 @@ export class FighterFactor {
      * 初始怪物包信息 并存入字典
      */
     private initMonsterBagConfig(){
-        let config = LoadManager.Instance.configs['monsterbag'];
+        let config = LoadManager.Instance.getJsonConfig('monsterbag');
         if(!config){
             Logger.error("读取怪物包信息失败");
             return;

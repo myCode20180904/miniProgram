@@ -26,6 +26,7 @@ export class UserManager {
     public set isLogin(value){
         this._isLogin = value;
         if(value){
+            UIManager.Instance.openWindow("MainUI",-1)
             UIManager.Instance.closeWindow("LoginUI")
             UIManager.Instance.openWindow('RankUI',-1);
             this.checkFirstToday();

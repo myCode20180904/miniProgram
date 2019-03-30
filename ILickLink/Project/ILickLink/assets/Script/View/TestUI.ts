@@ -1,5 +1,5 @@
 import { BaseUI} from "./BaseUI";
-import { UIManager} from "../manager/UIManager";
+import { UIManager} from "../Manager/UIManager";
 import { Logger } from "../Tool/Logger";
 import { FighterFactor } from "../Fighter/FighterFactor";
 const {ccclass, property} = cc._decorator;

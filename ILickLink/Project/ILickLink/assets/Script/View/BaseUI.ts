@@ -1,4 +1,4 @@
-import { UIManager } from "../manager/UIManager";
+import { UIManager } from "../Manager/UIManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,7 +14,7 @@ export class BaseUI extends cc.Component{
         if(!this.withFlowBg){
             return
         }
-        let bg = await UIManager.Instance.createPrefab('BackGround');
-        this.node.addChild(bg.node,-1);
+        let bg = UIManager.Instance.createPrefab('nodes/BackGround');
+        this.node.addChild(bg,-1);
     };
 }

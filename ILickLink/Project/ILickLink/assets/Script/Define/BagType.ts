@@ -1,5 +1,5 @@
 import { Util } from "./Util";
-import { BagManager } from "../manager/BagManager";
+import { BagManager } from "../Manager/BagManager";
 import { Logger } from "../Tool/Logger";
 
 

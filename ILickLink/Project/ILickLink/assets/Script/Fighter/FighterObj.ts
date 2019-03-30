@@ -1,5 +1,5 @@
 import { Util } from "../Define/Util";
-import { LoadManager } from "../manager/LoadManager";
+import { LoadManager } from "../Manager/LoadManager";
 
 /**
  * 属性
@@ -81,7 +81,7 @@ export class FighterObj extends ObjAttribute{
     private loadSpine(){
         this.skeleton = this.fighterNode.getChildByName('body').getComponent(sp.Skeleton);
         let strArr = this.Modelid.split('|');
-        let spineName = LoadManager.Instance.skeletons[strArr[0]]
+        let spineName = LoadManager.Instance.getSkeleton(strArr[0]);
         if (!spineName) {
             return;
         }
