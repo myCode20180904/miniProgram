@@ -8,6 +8,7 @@ import { displaywxsub } from "./Tool/wx/displaywxsub";
 import { MsEngine } from "./Net/protocols/MsEngine";
 import { GAME_DEBUG, USE_MATCHVS } from "./Define/GameConfig";
 import { LoginUI } from "./View/LoginUI";
+import { Logger } from "./Tool/Logger";
 
 /**
  * 常驻组件 从这里开始
@@ -53,9 +54,9 @@ export class LocalNode extends cc.Component {
 
     }
 
-    enterFirstPage(){
+    async enterFirstPage(){
         //
-        UIManager.Instance.openWindow('LoginUI');
+        await UIManager.Instance.openWindow('LoginUI');
         LoadManager.Instance.loadRes(new LoadHandel(
             function(completedCount,totalCount){
                 let loginUI:LoginUI = UIManager.Instance.findComponent("LoginUI");
@@ -68,6 +69,8 @@ export class LocalNode extends cc.Component {
                 if(loginUI){
                     loginUI.showLogin();
                 }
+
+                Logger.info(cc.loader)
                 
             }
         ));

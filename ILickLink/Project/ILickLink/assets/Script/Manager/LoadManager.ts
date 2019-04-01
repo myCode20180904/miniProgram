@@ -27,6 +27,10 @@ export class LoadManager {
     private texture_deps:Array<string> = [];
     private spriteFrame_deps:Array<string> = [];
     //字体
+
+    //需要提前加载的资源数组
+    private preResArr:Array<any> = ['view/LoginUI',
+    'view/nodes/BackGround'];
 	public constructor() {
         this.init();
     }
@@ -164,7 +168,7 @@ export class LoadManager {
      * @param handel 
      */
     public preLoadRes(handel:LoadHandel){
-        cc.loader.loadResArray(['view/LoginUI','view/nodes/BackGround'],function(){
+        cc.loader.loadResArray(this.preResArr,function(){
             handel.complete();
         })
     }
@@ -181,6 +185,9 @@ export class LoadManager {
         // for(let r of GameConfig.beforeLoadRes){
         //     await LoadAsync.getRes(r).load();
         // }
+
+        cc.loader.release(this.preResArr);
+
         var that = this;
         that.loadResRemote({
             success:function(){
