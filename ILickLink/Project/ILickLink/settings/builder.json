@@ -7,6 +7,13 @@
     "scheme": "https",
     "skipRecord": false
   },
+  "appBundle": false,
+  "baidugame": {
+    "REMOTE_SERVER_ROOT": "",
+    "appid": "testappid",
+    "orientation": "portrait",
+    "subContext": ""
+  },
   "encryptJs": true,
   "excludeScenes": [],
   "fb-instant-games": {},
@@ -30,7 +37,7 @@
   },
   "startScene": "81e988e8-8c0b-4694-84ef-3e65a2b6bad5",
   "title": "ILickLink",
-  "webOrientation": "auto",
+  "webOrientation": "portrait",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "https://minigame-1257126548.cos.ap-chengdu.myqcloud.com/ILickLink",
     "appid": "wxfdd206c03b158c68",

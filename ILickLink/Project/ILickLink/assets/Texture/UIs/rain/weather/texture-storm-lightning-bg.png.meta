@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "a8c0cf27-ef5b-4c8c-bf95-9c57c8eddd16",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "texture-storm-lightning-bg": {
+      "ver": "1.0.3",
+      "uuid": "ad92baaf-34e9-43df-9035-c1c110ad0afd",
+      "rawTextureUuid": "a8c0cf27-ef5b-4c8c-bf95-9c57c8eddd16",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 384,
+      "height": 256,
+      "rawWidth": 384,
+      "rawHeight": 256,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

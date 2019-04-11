@@ -20,17 +20,44 @@ export enum ShaderType {
     FluxaySuper,
     Streamer,
     HighLight,
-    OutGlow
+    Outline,
+    OutGlow,
+    InnerGlow,
+    RainDot,
+    Mosaic,
+    MultiTexture,
+    Pixel,
+    Shutter,
+    SimpleMovingGrass,
+    UVMove,
+    WateWave,
+    Emboss,
+    FlickOver,
+    Rectangle,
+    TurnPage,
+    Transfer,
+    SearchLight,
+    LightRun
     
 }
 
 export default class ShaderManager {
-    static useShader(sprite: cc.Sprite, shader: ShaderType): ShaderMaterial {
+    static useShader(rc: cc.RenderComponent, shader: ShaderType): ShaderMaterial {
         if (cc.game.renderType === cc.game.RENDER_TYPE_CANVAS) {
             console.warn('Shader not surpport for canvas');
             return;
         }
-        if (!sprite || !sprite.spriteFrame || sprite.getState() === <number>(shader)) {
+        let texture = null;
+        if (rc instanceof cc.Sprite) {
+            texture = rc.spriteFrame.getTexture();
+        } else if (rc instanceof dragonBones.ArmatureDisplay) {
+            texture = rc.dragonAtlasAsset && rc.dragonAtlasAsset.texture;
+        }else if (rc instanceof sp.Skeleton) {
+           
+        }
+        
+        if (!texture) {
+            rc['disableRender']();
             return;
         }
         if (shader > ShaderType.Gray) {
@@ -40,19 +67,27 @@ export default class ShaderManager {
                 console.warn('Shader not defined', name);
                 return;
             }
-            cc.dynamicAtlasManager.enabled = false;
+            let __rc = rc as any;
             let material = new ShaderMaterial(name, lab.vert, lab.frag, lab.defines || []);
-            let texture = sprite.spriteFrame.getTexture();
+            material.useColor = false;
             material.setTexture(texture);
             material.updateHash();
-            let sp = sprite as any;
-            sp._material = material;
-            sp._renderData._material = material;
-            sp._state = shader;
+            
+            if (rc instanceof cc.Sprite && __rc._renderData) {
+                __rc._renderData.material = material;
+            }
+            // __rc._material = material;
+            // __rc._state = shader;
+            __rc.markForUpdateRenderData(true);
+            __rc.markForRender(true);
+            __rc._updateMaterial(material);
+            if(lab['init']){
+                lab['init'](material);
+            }
             return material;
         }
         else {
-            sprite.setState(<number>(shader));
+            // texture.setState(<number>(shader));
         }
     }
 }

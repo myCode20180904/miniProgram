@@ -6,7 +6,7 @@ import { GameProto } from "./Net/protocols/GameProto";
 import { WXManager } from "./Tool/wx/wxApi";
 import { displaywxsub } from "./Tool/wx/displaywxsub";
 import { MsEngine } from "./Net/protocols/MsEngine";
-import { GAME_DEBUG, USE_MATCHVS } from "./Define/GameConfig";
+import { GAME_DEBUG, USE_MATCHVS, LOG_DEBUG } from "./Define/GameConfig";
 import { LoginUI } from "./View/LoginUI";
 import { Logger } from "./Tool/Logger";
 
@@ -34,7 +34,7 @@ export class LocalNode extends cc.Component {
         }
         //注册协议
         GameProto.Instance.registerProtocol();
-        cc.debug.setDisplayStats(GAME_DEBUG);
+        cc.debug.setDisplayStats(LOG_DEBUG);
     }
 
     start () {

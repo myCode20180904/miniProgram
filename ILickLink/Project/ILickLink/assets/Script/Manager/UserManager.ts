@@ -3,7 +3,6 @@ import { SC_Packet, CS_Packet,CS_UserLogin,SC_UserLogin, SC_GetPlayerData } from
 import {UserInfo } from "../Define/UserType";
 import { UIManager } from "./UIManager";
 import { BagManager } from "./BagManager";
-import { LocalNode } from "../LocalNode";
 import { Logger } from "../Tool/Logger";
 import { MainUI } from "../View/MainUI";
 import { LLXLayer } from "../Game_LLX/LLXLayer";
@@ -28,7 +27,7 @@ export class UserManager {
         if(value){
             UIManager.Instance.openWindow("MainUI",-1)
             UIManager.Instance.closeWindow("LoginUI")
-            UIManager.Instance.openWindow('RankUI',-1);
+            // UIManager.Instance.openWindow('RankUI',-1);
             this.checkFirstToday();
             this.refreshToUI();
         }

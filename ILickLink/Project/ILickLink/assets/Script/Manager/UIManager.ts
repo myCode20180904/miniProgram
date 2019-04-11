@@ -154,6 +154,7 @@ export class UIManager {
             this.closeWindow(this.uiList[index]);
             
         }
+        cc.sys.garbageCollect();
     }
     
     /**
@@ -169,6 +170,7 @@ export class UIManager {
                 loaded();
                 that.rootNode = cc.find('Canvas');
                 resolve()
+                cc.sys.garbageCollect();
             });
         })
     }

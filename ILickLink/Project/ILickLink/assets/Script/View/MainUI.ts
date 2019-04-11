@@ -2,7 +2,6 @@ import { BaseUI} from "./BaseUI";
 import { UIManager} from "../Manager/UIManager";
 import { Logger } from "../Tool/Logger";
 import { UserManager } from "../Manager/UserManager";
-import { Util } from "../Define/Util";
 import { WXManager } from "../Tool/wx/wxApi";
 import { CommonHandel } from "../Define/CommonParam";
 import { LLXManager } from "../Game_LLX/LLXManager";
@@ -24,6 +23,7 @@ export class MainUI extends BaseUI {
         Logger.info('MainUI onLoad');
     }
 
+    
     onDestroy(){
         Logger.info('MainUI onDestroy');
     }
@@ -36,6 +36,12 @@ export class MainUI extends BaseUI {
         this.node.on(cc.Node.EventType.TOUCH_START,function(){},this);
         //
         this.refreshUI();
+
+        //
+        let rain = UIManager.Instance.createPrefab('nodes/Rain');
+        this.node.addChild(rain,1000);
+        rain.getChildByName('43046_ske').getComponent(dragonBones.ArmatureDisplay).playAnimation('wait',1000);
+
     }
 
     public refreshUI(){
@@ -59,6 +65,9 @@ export class MainUI extends BaseUI {
         }
         if(customEventData=="test"){
             this.test();
+        }
+        if(customEventData=="test2"){
+            this.test2();
         }
         if(customEventData=="startllx"){
             this.starLLX();
@@ -117,6 +126,11 @@ export class MainUI extends BaseUI {
     private test(){
         UIManager.Instance.openWindow("TestScrollView");
     }
+    private test2(){
+        UIManager.Instance.loadScene('FighterScene',function(){
+            
+        })
+    }
 
     /**
      * 关闭
@@ -134,4 +148,6 @@ export class MainUI extends BaseUI {
         Logger.info('MainUI onHide');
         
     }
+
+  
 }

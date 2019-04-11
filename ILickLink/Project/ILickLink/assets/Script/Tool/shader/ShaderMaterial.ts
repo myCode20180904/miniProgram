@@ -91,4 +91,12 @@ export default class ShaderMaterial extends Material {
         this._num = num;
         this._effect.setProperty('num', this._num);
     }
+    /**添加shader中uniform变量, 并且赋初始值 */
+    uniform(name, type, val) {
+        this._mainTech._parameters.push({
+            name: name,
+            type: type
+        });
+        this._effect.setProperty(name, val);
+    }
 }

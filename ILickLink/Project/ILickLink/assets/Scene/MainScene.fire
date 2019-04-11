@@ -44,8 +44,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5476727552816901,
-      "y": 0.5476727552816901,
+      "x": 0.5379896566901408,
+      "y": 0.5379896566901408,
       "z": 1
     },
     "_quat": {
@@ -191,7 +191,7 @@
       "__id__": 3
     },
     "_enabled": true,
-    "_cullingMask": 4294967295,
+    "_cullingMask": -17,
     "_clearFlags": 7,
     "_backgroundColor": {
       "__type__": "cc.Color",

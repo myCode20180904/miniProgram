@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "d4cd549d-d5a0-4824-bffc-8ebebd15f96a",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "George": {
+      "ver": "1.0.3",
+      "uuid": "46117e48-be60-4c0a-9df7-51756ae9bf11",
+      "rawTextureUuid": "d4cd549d-d5a0-4824-bffc-8ebebd15f96a",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 242,
+      "height": 261,
+      "rawWidth": 242,
+      "rawHeight": 261,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
