@@ -13,11 +13,12 @@ console.log(systemInfo);
 var system = systemInfo.system;
 var platform = systemInfo.platform;
 var language = systemInfo.language;
+var wechatVersioin = systemInfo.version;
 
 var android = system.toLowerCase().indexOf('android') !== -1;
 
-var uaDesc = android ? 'Android; CPU Android 6.0' : 'iPhone; CPU iPhone OS 10_3_1 like Mac OS X';
-var ua = 'Mozilla/5.0 (' + uaDesc + ') AppleWebKit/603.1.30 (KHTML, like Gecko) Mobile/14E8301 MicroMessenger/6.6.0 MiniGame NetType/WIFI Language/' + language;
+var uaDesc = android ? 'Android; CPU ' + system : 'iPhone; CPU iPhone OS ' + system + ' like Mac OS X';
+var ua = 'Mozilla/5.0 (' + uaDesc + ') AppleWebKit/603.1.30 (KHTML, like Gecko) Mobile/14E8301 MicroMessenger/' + wechatVersioin + ' MiniGame NetType/WIFI Language/' + language;
 
 var navigator = {
   platform: platform,

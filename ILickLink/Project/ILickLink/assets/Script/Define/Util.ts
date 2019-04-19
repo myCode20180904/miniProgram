@@ -52,6 +52,18 @@ export class Util {
         return dst;
     };
 
-
-
+    /**
+     * 获取cocos本地路径
+     * @param url 
+     */
+    public static getNativeUrl(url){
+        if(window['wx']){
+            let md5Pipe = cc.loader.md5Pipe;
+            if (md5Pipe) {
+                return md5Pipe.transformURL(cc.loader.getRes(url).nativeUrl);
+            }
+            return cc.loader.getRes(url).nativeUrl;
+        }
+        return cc.loader.getRes(url).nativeUrl;
+    }
 }

@@ -26,16 +26,24 @@
 var ID = 'WXDownloader';
 
 var non_text_format = [
-    'js','png','jpg','bmp','jpeg','gif','ico','tiff','webp','image','pvr','etc','mp3','ogg','wav','m4a','font','eot','ttf','woff','svg','ttc'
+    'js','png','jpg','bmp','jpeg','gif','ico','tiff','webp','image','mp3','ogg','wav','m4a','font','eot','ttf','woff','svg','ttc'
 ];
 
 var binary_format = [
-    'bin'
+    'bin',
+    'pvr',
+    'pkm'
 ];
 
 const REGEX = /^\w+:\/\/.*/;
 
-var fs = wx.getFileSystemManager ? wx.getFileSystemManager() : {};
+// used to control cache
+var cacheQueue = {};
+var checkNextPeriod = false;
+// cache one per cycle
+var cachePeriod = 100;
+
+var fs = wx.getFileSystemManager ? wx.getFileSystemManager() : null;
 
 var _newAssets = [];
 var WXDownloader = window.WXDownloader = function () {
@@ -51,8 +59,7 @@ WXDownloader.ID = ID;
 WXDownloader.prototype.handle = function (item, callback) {
 
     if (item.type === 'js') {
-        callback(null, null);
-        return;
+        return null;
     }
     if (item.type === 'uuid') {
         var result = cc.Pipeline.Downloader.PackDownloader.load(item, callback);
@@ -70,8 +77,7 @@ WXDownloader.prototype.handle = function (item, callback) {
 
     if (CC_WECHATGAMESUB) {
         if (REGEX.test(item.url)) {
-            callback(null, null);
-            return;
+            return null;
         }
 
         item.url = this.SUBCONTEXT_ROOT + '/' + item.url;
@@ -79,6 +85,11 @@ WXDownloader.prototype.handle = function (item, callback) {
         if (item.type && non_text_format.indexOf(item.type) !== -1) {
             nextPipe(item, callback);
             return;
+        }
+
+        // if wx.getFileSystemManager is undefined, need to skip
+        if (!fs) {
+            return null;
         }
     }
 
@@ -115,6 +126,11 @@ WXDownloader.prototype.cleanOldAssets = function () {
 };
 
 function cleanAllFiles(path, newAssets, finish) {
+    if (!fs) {
+        finish('wx.getFileSystemManager is undefined');
+        return;
+    }
+
     fs.readdir({
         dirPath: path,
         success: function (res) {
@@ -149,13 +165,13 @@ function cleanAllFiles(path, newAssets, finish) {
                     }
                 }
                 else {
-                    finish && finish();
+                    finish();
                 }
 
             })(0);
         },
         fail: function (res) {
-            finish && finish();
+            finish(res ? res.errMsg : 'unknown error');
         },
     });
 }
@@ -178,18 +194,31 @@ function nextPipe(item, callback) {
     var queue = cc.LoadingItems.getQueue(item);
     queue.addListener(item.id, function (item) {
         if (item.error) {
-            fs.unlink({
-                filePath: item.url,
-                success: function () {
-                    cc.log('Load failed, removed local file ' + item.url + ' successfully!');
-                }
-            });
+            if (item.url in cacheQueue) {
+                delete cacheQueue[item.url];
+            }
+            else {
+                fs && fs.unlink({
+                    filePath: item.url,
+                    success: function () {
+                        cc.log('Load failed, removed local file ' + item.url + ' successfully!');
+                    }
+                });
+            }
         }
     });
     callback(null, null);
 }
 
 function readText (item, callback) {
+    if (!fs) {
+        callback({
+            status: 0,
+            errorMessage: 'wx.getFileSystemManager is undefined'
+        });
+        return;
+    }
+
     var url = item.url;
     var encodingFormat = 'utf8';
     for (var i = 0; i < binary_format.length; i++) {
@@ -244,6 +273,14 @@ function readText (item, callback) {
 }
 
 function readFromLocal (item, callback) {
+    if (!fs) {
+        callback({
+            status: 0,
+            errorMessage: 'wx.getFileSystemManager is undefined'
+        });
+        return;
+    }
+
     var localPath = wx.env.USER_DATA_PATH + '/' + item.url;
 
     // Read from local file cache
@@ -275,6 +312,11 @@ function readFromLocal (item, callback) {
 }
 
 function ensureDirFor (path, callback) {
+    if (!fs) {
+        callback('wx.getFileSystemManager is undefined');
+        return;
+    }
+
     // cc.log('mkdir:' + path);
     var ensureDir = cc.path.dirname(path);
     if (ensureDir === "wxfile://usr" || ensureDir === "http://usr") {
@@ -295,6 +337,38 @@ function ensureDirFor (path, callback) {
     });
 }
 
+function cacheAsset (url, localPath) {
+    cacheQueue[url] = localPath;
+
+    if (!checkNextPeriod) {
+        checkNextPeriod = true;
+        function cache () {
+            checkNextPeriod = false;
+            for (var url in cacheQueue) {
+                var localPath = cacheQueue[url];
+                ensureDirFor(localPath, function () {
+                    // Save to local path
+                    wx.saveFile({
+                        tempFilePath: url,
+                        filePath: localPath,
+                        success: function (res) {
+                            cc.log('cache success ' + localPath);
+                        }
+                    });
+                });
+                
+                delete cacheQueue[url];
+                if (!cc.js.isEmptyObject(cacheQueue) && !checkNextPeriod) {
+                    checkNextPeriod = true;
+                    setTimeout(cache, cachePeriod);
+                }
+                return;
+            }
+        };
+        setTimeout(cache, cachePeriod);
+    }
+}
+
 function downloadRemoteFile (item, callback) {
     // Download from remote server
     var relatUrl = item.url;
@@ -313,37 +387,15 @@ function downloadRemoteFile (item, callback) {
             if (res.statusCode === 200 && res.tempFilePath) {
                 // http reading is not cached
                 var temp = res.tempFilePath;
-                var localPath = wx.env.USER_DATA_PATH + '/' + relatUrl;
-                // check and mkdir remote folder has exists
-                ensureDirFor(localPath, function () {
-                    // Save to local path
-                    wx.saveFile({
-                        tempFilePath: res.tempFilePath,
-                        filePath: localPath,
-                        success: function (res) {
-                            // cc.log('save:' + localPath);
-                            item.url = res.savedFilePath;
-                            if (item.type && non_text_format.indexOf(item.type) !== -1) {
-                                nextPipe(item, callback);
-                            }
-                            else {
-                                readText(item, callback);
-                            }
-                        },
-                        fail: function (res) {
-                            // Failed to save file, then just use temp
-                            console.log(res && res.errMsg ? res.errMsg : 'save file failed: ' + remoteUrl);
-                            console.log('It might be due to out of storage spaces, you can clean your storage spaces manually.');
-                            item.url = temp;
-                            if (item.type && non_text_format.indexOf(item.type) !== -1) {
-                                nextPipe(item, callback);
-                            }
-                            else {
-                                readText(item, callback);
-                            }
-                        }
-                    });
-                });
+                item.url = temp;
+                if (item.type && non_text_format.indexOf(item.type) !== -1) {
+                    nextPipe(item, callback);
+                }
+                else {
+                    readText(item, callback);
+                }
+                cacheAsset(temp, wx.env.USER_DATA_PATH + '/' + relatUrl);
+                
             }
             else {
                 cc.warn("Download file failed: " + remoteUrl);
@@ -355,14 +407,12 @@ function downloadRemoteFile (item, callback) {
         },
         fail: function (res) {
             // Continue to try download with downloader, most probably will also fail
-            cc.error("download fail, try download again most probably will also fail ")
-            downloadRemoteFile(item, callback)
-            // callback({
-            //     status: 0,
-            //     errorMessage: res && res.errMsg ? res.errMsg : "Download file failed: " + remoteUrl
-            // }, null);
+            callback({
+                status: 0,
+                errorMessage: res && res.errMsg ? res.errMsg : "Download file failed: " + remoteUrl
+            }, null);
         }
-    })
+    });
 }
 
 // function downloadRemoteTextFile (item, callback) {

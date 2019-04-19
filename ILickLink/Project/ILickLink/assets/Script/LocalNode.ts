@@ -55,6 +55,7 @@ export class LocalNode extends cc.Component {
     }
 
     async enterFirstPage(){
+        var that = this;
         //
         await UIManager.Instance.openWindow('LoginUI');
         LoadManager.Instance.loadRes(new LoadHandel(
@@ -71,13 +72,15 @@ export class LocalNode extends cc.Component {
                 }
 
                 Logger.info(cc.loader)
-                
+                that.activeThree();
             }
         ));
         
     }
 
-
+    private activeThree(){
+        this.node.getChildByName('threeNode').active = true;
+    }
  
     /**
      * showDisplayView 数据域
