@@ -3,15 +3,17 @@
     <h1>{{ msg }}</h1>
 
     <router-link to="/HelloWorld">HelloWorld</router-link>
+    <router-link to = "/components/copyright/copyright">copyright</router-link>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'mainPage',
   data () {
     return {
-      msg: '这里是App入口'
+      msg: '这里是入口'
     }
   }
 }
