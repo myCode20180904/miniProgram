@@ -1,0 +1,28 @@
+html, body{
+  margin: 0;
+  padding: 0;
+}
+.header{
+  width: 100%;
+  height: 150px;
+  background-color: blueviolet;
+
+}
+h1{
+  margin: 0;
+  padding: 0;
+}
+
+
+.content{
+  display: flex;
+  height: 572px;
+}
+.left{
+  flex: 2;
+  background-color: #1392e9;
+}
+.mainBox{
+  flex: 8;
+  background-color: #60ac39;
+}
