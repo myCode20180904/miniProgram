@@ -34,6 +34,13 @@ export class GameConfig {
     public static port = 8200;
     public static imageUrl = 'https://minigame-1257126548.cos.ap-chengdu.myqcloud.com/ILickLink'
     public static downLoadUrl = 'https://minigame-1257126548.cos.ap-chengdu.myqcloud.com/ILickLink'
+    public static dataEventUrl = 'https://websdk-test-dts-dc.youzu.com/log'
 
-    
+    public static init = function(){
+
+        if(GAME_DEBUG){
+            
+        }
+        
+    }
 }

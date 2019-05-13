@@ -1,5 +1,6 @@
 import { LOG_DEBUG } from "./GameConfig";
 import LoginUI from "./view/LoginUI";
+import { UIManager } from "./manager/UIManager";
 
 /**
  * 常驻组件 从这里开始
@@ -19,6 +20,8 @@ export class LocalNode extends cc.Component {
     onLoad () {
         //添加wx
         cc.debug.setDisplayStats(LOG_DEBUG);
+        //
+        UIManager.Instance;
     }
 
     start () {

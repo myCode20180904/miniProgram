@@ -56,17 +56,16 @@ export default class texture3d01 extends cc.Component{
 
       // Create camera
       this.camera = new THREE.PerspectiveCamera(20,this.node.width/this.node.height, 1, 1000); 
-      this.camera.position.set( 0, 0, 400 );//设置相机位置  
+      this.camera.position.set( 0, 0, 200 );//设置相机位置  
 
       this.renderer = new THREE.WebGLRenderer( { canvas: canvas, context: context } );
       this.renderer.setPixelRatio( window.devicePixelRatio );
       this.renderer.setSize( this.node.width, this.node.height );
       this.renderer.autoClear = true;
       document.body.appendChild( this.renderer.domElement );
-      var sunTexture = THREE.ImageUtils.loadTexture(Util.getNativeUrl('three/img/world_map'), 0, function () {  
-         // that.renderer.render(that.scene, that.camera);  
-      });  
-        
+
+      //
+      var sunTexture = new THREE.TextureLoader().load(Util.getNativeUrl('texture/world_map'));
 
       //地球  
       this.Earth = new THREE.Mesh(new THREE.SphereGeometry(20, 30, 30), new THREE.MeshBasicMaterial({  

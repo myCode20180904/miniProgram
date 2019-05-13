@@ -1,3 +1,4 @@
+import { GameConfig } from "../GameConfig";
 
 export class Util {
     
@@ -122,5 +123,13 @@ export class Util {
         return path+type;
     }
     
+    public static getAudioRawUrl(url){
+        var path = cc.url.raw('resources/'+url);
+        if (cc.loader.md5Pipe) {
+            path = cc.loader.md5Pipe.transformURL(path);
+        }
+        return GameConfig.downLoadUrl+'/'+path+'.mp3';
+        //https://minigame-1257126548.cos.ap-chengdu.myqcloud.com/stick_client/res/raw-assets/58/58d18357-5f37-4d6c-ab4b-67eeacbe8fd5.a2313.mp3
+    }
 
 }

@@ -1,4 +1,5 @@
 import { LoadHandel } from "../define/CommonParam";
+import { Logger } from "../tools/Logger";
 
 /**
  * LoadManager  加载资源管理
@@ -21,7 +22,16 @@ export class LoadManager {
     if (res.length <= 0) {
       return;
     }
-    
+    //删减已加载项
+    for (let i = 0; i < res.length; i++) {
+      if(cc.loader.getRes(res[i].url,res[i].type)){
+        res.splice(i,1);
+        i--;
+      }
+      
+    }
+
+    //整理并加载
     var uuids = [];
     for (var i = 0; i < res.length; i++) {
         var item = res[i];

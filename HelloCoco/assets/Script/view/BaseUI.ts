@@ -7,12 +7,18 @@ import { LoadHandel } from "../define/CommonParam";
  */
 
 export default class BaseUI extends cc.Component {
-    public skin:string = '';
+    private skin:string = '';
+    private complete_call:Function = null;
+    private isClose:boolean = false;
     constructor(skin, res?: Array<{ url: string, type: typeof cc.Asset }>) {
         super();
         this.name = this['__classname__'];
-        this.skin = skin;
-        Logger.info('constructor', this);
+        if(skin){
+            this.skin = skin;
+            res.push({ url: skin, type:cc.Prefab});
+        }
+
+        Logger.info(this.name+'  constructor：', this);
 
         if (res.length > 0) {
             var that = this;
@@ -32,7 +38,11 @@ export default class BaseUI extends cc.Component {
         } else {
             this.onLoadComplete()
         }
+        
+    }
 
+    call(call:Function){
+        this.complete_call = call;
     }
 
     onLoadProcess(completedCount: number, totalCount: number) {
@@ -45,36 +55,59 @@ export default class BaseUI extends cc.Component {
             Logger.warn('not find prefab ' + this.name);
             return;
         }
+        /**
+         * 绑定节点
+         */
         this.node = cc.instantiate(cc.loader.getRes(this.skin, cc.Prefab));
         cc.find('Canvas').addChild(this.node);
+        this.node['_components'].push(this);
+        /**
+         * 激活组件
+         */
+        cc.director['_nodeActivator'].activateComp(this);
+
+        this.complete_call&&this.complete_call();
     }
 
-    onEnable() {
-        Logger.info('onEnable:', this.name);
+    close(){
+        this.isClose = true;
+    }
+
+    onClose(){
+        Logger.info(this.name+'  onClose:');
     }
 
     onLoad() {
-        Logger.info('onLoad:', this.name);
+        Logger.info(this.name+'  onLoad:');
+    }
+
+    onEnable() {
+        Logger.info(this.name+'  onEnable:');
     }
 
     start() {
-        Logger.info('start:', this.name);
+        Logger.info(this.name+'  start:');
     }
 
     update(dt: number) {
-        Logger.info('update:', this.name);
+        if(this.isClose){
+            this.onClose();
+            this.node.destroy();
+            this.destroy();
+        }
     }
 
     lateUpdate() {
-        Logger.info('lateUpdate:', this.name);
     }
 
     onDisable() {
-        Logger.info('onDisable:', this.name);
+        Logger.info(this.name+'  onDisable:');
     }
 
     onDestroy() {
-        Logger.info('onDestroy:', this.name);
+        Logger.info(this.name+'  onDestroy:');
+        this.skin = '';
+        this.complete_call = null;
     }
 
 }

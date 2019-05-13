@@ -3455,7 +3455,7 @@ export class QRCode {
 		  *
 		  * @param url
 		  */
-		 load(url: string,call:any): void;
+		 load(url: string,call?:any): Texture;
 	 }
  
 	 // Materials //////////////////////////////////////////////////////////////////////////////////

@@ -27,3 +27,21 @@ export class UserInfo {
     public myRank:number = 99999;//我的排名
     
 }
+
+
+//挂机助战类型
+export enum AssistType {
+    DEFAULT = 0,
+    FIGHT_UP_TYPE = 1, //助战战力加成
+    GOLD_UP_TYPE = 2, //助战金币加成
+}
+
+//进入参数
+export class EnterQuery{
+    //来源场景
+    public secneID:number = 1001;
+    //分享类型
+    public shareType:AssistType = AssistType.DEFAULT;
+    //分享来源id
+    public shareKey:number = 0;
+}
