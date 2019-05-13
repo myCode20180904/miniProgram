@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "d611971b-5ccb-4a2d-bea4-0eb41fef15cc",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "houtui": {
+      "ver": "1.0.3",
+      "uuid": "ec055852-2f89-43d4-bafd-1edf7309c44c",
+      "rawTextureUuid": "d611971b-5ccb-4a2d-bea4-0eb41fef15cc",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 52,
+      "height": 35,
+      "rawWidth": 52,
+      "rawHeight": 35,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
