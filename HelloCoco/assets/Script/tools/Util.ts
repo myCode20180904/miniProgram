@@ -1,4 +1,5 @@
 import { GameConfig } from "../GameConfig";
+import { Logger } from "./Logger";
 
 export class Util {
     
@@ -130,6 +131,31 @@ export class Util {
         }
         return GameConfig.downLoadUrl+'/'+path+'.mp3';
         //https://minigame-1257126548.cos.ap-chengdu.myqcloud.com/stick_client/res/raw-assets/58/58d18357-5f37-4d6c-ab4b-67eeacbe8fd5.a2313.mp3
+    }
+
+    
+    /**
+     * 截图
+     * @param node 
+     * @param mask 
+     */
+	public static getCameraTextureNode(node:cc.Node,mask:number){
+        let camera = node.addComponent(cc.Camera);
+        // 设置你想要的截图内容的 cullingMask
+        camera.cullingMask = mask;
+        camera.clearFlags = 0
+        camera.depth = 2;
+        // 新建一个 RenderTexture，并且设置 camera 的 targetTexture 为新建的 RenderTexture，这样 camera 的内容将会渲染到新建的 RenderTexture 中。
+        let texture = new cc.RenderTexture();
+        let gl = cc.game['_renderContext'];
+        // 如果截图内容中不包含 Mask 组件，可以不用传递第三个参数
+        texture.initWithSize(node.width, node.height, gl.STENCIL_INDEX8);
+        camera.targetTexture = texture;
+        // 渲染一次摄像机，即更新一次内容到 RenderTexture 中
+        camera.render(node);
+        node.removeComponent(camera);
+        camera.destroy();
+        return new cc.SpriteFrame(texture);
     }
 
 }

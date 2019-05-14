@@ -8,6 +8,7 @@ import { UserManager } from "../manager/UserManager";
 import { MsEngine } from "../net/MsEngine";
 import { GameConfig, USE_MATCHVS } from "../GameConfig";
 import { MD5 } from "../tools/md5";
+import { UIManager } from "../manager/UIManager";
 
 /**
  * LoginUI
@@ -72,7 +73,7 @@ export default class LoginUI extends BaseUI {
      */
     setProcess(process: number) {
         this.processBar.progress = process / 100;
-        this.node.getChildByName('tip').getComponent(cc.Label).string = process + '%'
+        this.node.getChildByName('tip').getComponent(cc.Label).string = '资源加载中...    '+process + '%'
     }
 
 
@@ -82,11 +83,11 @@ export default class LoginUI extends BaseUI {
     showLogin(){
         this.login_bn.node.active = true;
         if(window['wx']){
-            this.processBar.node.active = false;
+            // this.processBar.node.active = false;
             this.login(null,null);
         }else{
             this.login_bn.node.active = true;
-            this.processBar.node.active = false;
+            // this.processBar.node.active = false;
 
         }
     }
@@ -97,7 +98,6 @@ export default class LoginUI extends BaseUI {
     enterHall(){
         Logger.info('进入大厅：');
         this.login_bn.node.active = false;
-
         new HallUI('view/Hall').call(()=>{
             this.close();
         });

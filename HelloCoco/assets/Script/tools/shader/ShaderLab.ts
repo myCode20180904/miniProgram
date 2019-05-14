@@ -1,8 +1,8 @@
 const renderer = cc.renderer.renderEngine.renderer;
 export const MVP = `
-uniform mat4 viewProj;
-attribute vec3 a_position;
-attribute vec2 a_uv0;
+uniform mat4 viewProj;  //即 MVP
+attribute vec3 a_position;  //pos
+attribute vec2 a_uv0;  //
 varying vec2 uv0;
 void main () {
     vec4 pos = viewProj * vec4(a_position, 1);
@@ -148,6 +148,9 @@ const ShaderLab = {
         `
     },
     Blur: {
+        init:function(material){
+            
+        },
         vert: MVP,
         frag: 
         `
@@ -178,7 +181,58 @@ const ShaderLab = {
         }
         `
     },
+    Blur_Edge_Detail: {
+        init:function(material){
+            material.uniform(
+                'widthStep',
+                renderer.PARAM_FLOAT,
+                (1.0/material._texture.width)
+            );
+    
+            material.uniform(
+                'heightStep',
+                renderer.PARAM_FLOAT,
+                (1.0/material._texture.height)
+            );
+    
+            material.uniform(
+                'strength',
+                renderer.PARAM_FLOAT,
+                1.0
+            );
+            
+        },
+        vert: MVP,
+        frag: 
+        `
+        uniform sampler2D texture;
+        uniform vec4 color;
+        varying vec2 uv0;
+
+        uniform float widthStep;
+        uniform float heightStep;
+        uniform float strength;
+        const float blurRadius = 4.0;
+        const float blurPixels = (blurRadius * 2.0 + 1.0) * (blurRadius * 2.0 + 1.0);
+        void main () {
+            vec3 sumColor = vec3(0.0, 0.0, 0.0);
+            for(float fy = -blurRadius; fy <= blurRadius; ++fy)
+            {
+                for(float fx = -blurRadius; fx <= blurRadius; ++fx)
+                {
+                    vec2 coord = vec2(fx * widthStep, fy * heightStep);
+                    sumColor += texture2D(texture, uv0 + coord).rgb;
+                }
+            }
+            gl_FragColor = vec4(mix(texture2D(texture, uv0).rgb, sumColor / blurPixels, strength), 1.0);
+                
+        }
+        `
+    },
     GaussBlur: {
+        init:function(material){
+            
+        },
         vert: MVP,
         frag: 
         `
@@ -502,7 +556,7 @@ const ShaderLab = {
         void main() {
             float imageWidth = 512.0;
             float imageHeight = 512.0;
-            float mosaicSize = 16.0;
+            float mosaicSize = 4.0;
             vec2 texSize = vec2(imageWidth, imageHeight);
             // 计算实际图像位置
             vec2 xy = vec2(uv0.x * texSize.x, uv0.y * texSize.y);
@@ -701,7 +755,53 @@ const ShaderLab = {
         `
     },
 
-    
+    Glass:{//玻璃
+        init:function(material){
+            material.uniform('iResolution',renderer.PARAM_FLOAT2,cc.v2(material._texture.width, material._texture.height));
+
+            material.uniform(
+                'blurRadiusScale',
+                renderer.PARAM_FLOAT,
+                2.0
+            );
+        },
+        vert: MVP,
+        frag:
+        `
+        
+        #ifdef GL_ES
+        precision mediump float;
+        #endif
+
+        #define PI  3.1415926535
+
+        uniform sampler2D texture;
+        varying vec2 uv0;
+        uniform lowp vec4 color;
+
+        uniform vec2 iResolution;
+        uniform float blurRadiusScale;
+        const float blurRadius = 4.0;
+        const float blurPixels = (blurRadius * 2.0 + 1.0) * (blurRadius * 2.0 + 1.0);
+        float random(vec3 scale, float seed) {
+            return fract(sin(dot(gl_FragCoord.xyz + seed, scale)) * 43758.5453 + seed);
+        }
+        void main( void ) {
+            vec3 sumColor = vec3(0.0, 0.0, 0.0);  
+            for(float fy = -blurRadius; fy <= blurRadius; ++fy)
+            {
+                float dir = random(vec3(12.9898, 78.233, 151.7182), 0.0);
+                for(float fx = -blurRadius; fx <= blurRadius; ++fx)
+                {
+                    float dis = distance(vec2(fx * iResolution.x, fy * iResolution.y), vec2(0.0, 0.0)) * blurRadiusScale;
+                    vec2 coord = vec2(dis * cos(dir), dis * sin(dir));
+                    sumColor += texture2D(texture, uv0 + coord).rgb;
+                }
+            }
+            gl_FragColor = vec4(sumColor / blurPixels, 0.2);
+        }
+        `
+    },
 
 };
 

@@ -1,17 +1,13 @@
 import BaseUI from "./BaseUI";
-import { Util } from "../tools/Util";
-import ShaderComponent from "../tools/shader/ShaderComponent";
-import { ShaderType } from "../tools/shader/ShaderManager";
-import { Logger } from "../tools/Logger";
 
 /**
- * LoadingUI
+ * ToastUI
  */
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class LoadingUI extends BaseUI {
+export default class ToastUI extends BaseUI {
     private bg:cc.Node;
     constructor(skin:string){
         super(skin,[]);
@@ -37,6 +33,12 @@ export default class LoadingUI extends BaseUI {
         this.bg = this.node.getChildByName('background');
 
         this.blurBg(this.bg);
+
+        this.bg.on(cc.Node.EventType.TOUCH_START,function(){
+            this.close();
+        }.bind(this),this)
+
+        
     }
 
     /**
@@ -45,8 +47,6 @@ export default class LoadingUI extends BaseUI {
     setProcess(process: number) {
         
     }
-
-
     
     
     onClose(){
@@ -59,25 +59,6 @@ export default class LoadingUI extends BaseUI {
     }
     hide(){
         this.node&&(this.node.active = false);
-    }
-
-    private updateFrame:number = 0;
-    private frameDt:number = 0;
-    update(dt){
-        super.update(dt);
-        this.updateFrame++;
-        this.frameDt+=dt;
-        if(this.updateFrame%1000==0){
-            this.fixedUpdate(this.frameDt)
-            this.frameDt = 0;
-        }
-        if(this.updateFrame>Number.MAX_VALUE){
-            this.updateFrame = 0;
-        }
-    }
-
-    fixedUpdate(dt){
-        
     }
 
 

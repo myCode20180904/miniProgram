@@ -63,7 +63,7 @@ export default class ShaderComponent extends cc.Component {
         switch (shader) {
             case ShaderType.Blur:
             case ShaderType.GaussBlur:
-                material.setNum(0.03); //0-0.1
+                material.setNum(0.02); //0-0.1
                 break;
             default:
                 break;

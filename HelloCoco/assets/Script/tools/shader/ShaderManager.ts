@@ -15,6 +15,7 @@ export enum ShaderType {
     Invisible,
     Blur,
     GaussBlur,
+    Blur_Edge_Detail,
     Dissolve,
     Fluxay,
     FluxaySuper,
@@ -37,7 +38,9 @@ export enum ShaderType {
     TurnPage,
     Transfer,
     SearchLight,
-    LightRun
+    LightRun,
+    Glass,
+    EffectForShaderToy
     
 }
 
