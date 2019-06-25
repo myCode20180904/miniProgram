@@ -27,7 +27,6 @@ export class LocalNode extends cc.Component {
     start () {
         // 声明常驻根节点
         cc.game.addPersistRootNode(this.node);
-
        
         this.enterFirstPage();
 

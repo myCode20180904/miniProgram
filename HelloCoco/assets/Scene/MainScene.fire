@@ -194,7 +194,7 @@
       "__id__": 3
     },
     "_enabled": true,
-    "_cullingMask": 4294967295,
+    "_cullingMask": -7,
     "_clearFlags": 7,
     "_backgroundColor": {
       "__type__": "cc.Color",

@@ -1,14 +1,12 @@
 import BaseUI from "./BaseUI";
 import { Logger } from "../tools/Logger";
 import HallUI from "./HallUI";
-import LoadingUI from "./LoadingUI";
 import { WXManager } from "../tools/wx/wxApi";
 import { CommonHandel } from "../define/CommonParam";
 import { UserManager } from "../manager/UserManager";
 import { MsEngine } from "../net/MsEngine";
 import { GameConfig, USE_MATCHVS } from "../GameConfig";
 import { MD5 } from "../tools/md5";
-import { UIManager } from "../manager/UIManager";
 
 /**
  * LoginUI

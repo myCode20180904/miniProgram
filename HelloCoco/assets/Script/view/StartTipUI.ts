@@ -1,14 +1,17 @@
 import BaseUI from "./BaseUI";
+import { UIManager } from "../manager/UIManager";
+import { Logger } from "../tools/Logger";
+import HallUI from "./HallUI";
 
 /**
- * LoadingUI
+ * StartTipUI
  */
-
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export class LoadingUI extends BaseUI {
+export default class StartTipUI extends BaseUI {
     private bg:cc.Node;
+    private startBn:cc.Button;
     constructor(skin:string){
         super(skin,[]);
 
@@ -31,8 +34,10 @@ export class LoadingUI extends BaseUI {
 
     init(){
         this.bg = this.node.getChildByName('background');
-
         this.blurBg(this.bg);
+
+        this.startBn = this.node.getChildByName('startBn').getComponent(cc.Button);
+        this.addButtonEvent(this.startBn.node,'startGame','');
     }
 
     /**
@@ -41,12 +46,11 @@ export class LoadingUI extends BaseUI {
     setProcess(process: number) {
         
     }
-
-
     
     
     onClose(){
         super.onClose();
+
     }
     
     //#####################
@@ -57,14 +61,16 @@ export class LoadingUI extends BaseUI {
         this.node&&(this.node.active = false);
     }
 
-    update(dt){
-        super.update(dt);
-       
-    }
 
-    fixedUpdate(dt){
-        super.fixedUpdate(dt);
+    /**
+     * 开始游戏
+     */
+    startGame(){
+        this.close();
+        let hallnode  = UIManager.Instance.getRegUI('HallUI');
+        if(hallnode){
+            hallnode.getComponent(HallUI).startGame();
+        }
     }
-
 
 }

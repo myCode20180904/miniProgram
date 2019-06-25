@@ -3,7 +3,6 @@ import BaseUI from "./BaseUI";
 /**
  * ToastUI
  */
-
 const {ccclass, property} = cc._decorator;
 
 @ccclass

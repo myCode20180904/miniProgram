@@ -3,6 +3,7 @@ import { LoadManager } from "../manager/LoadManager";
 import { LoadHandel } from "../define/CommonParam";
 import ShaderComponent from "../tools/shader/ShaderComponent";
 import { ShaderType } from "../tools/shader/ShaderManager";
+import { UIManager } from "../manager/UIManager";
 
 /**
  * BaseUI
@@ -14,7 +15,7 @@ export default class BaseUI extends cc.Component {
     private isClose:boolean = false;
     constructor(skin, res?: Array<{ url: string, type: typeof cc.Asset }>) {
         super();
-        this.name = this['__classname__'];
+        this.name = this['constructor']['name'];
         if(skin){
             this.skin = skin;
             res.push({ url: skin, type:cc.Prefab});
@@ -69,7 +70,10 @@ export default class BaseUI extends cc.Component {
         cc.director['_nodeActivator'].activateComp(this);
 
         this.complete_call&&this.complete_call();
-
+         /**
+         * 注册到UIManager
+         */
+        UIManager.Instance.regUI(this.name,this.node.uuid);
         /**
          * 进入动画
          */
@@ -78,6 +82,10 @@ export default class BaseUI extends cc.Component {
 
     close(){
         this.isClose = true;
+        /**
+         * 移除注册UIManager
+         */
+        UIManager.Instance.unRegUI(this.name,this.node.uuid);
     }
 
     onClose(){
@@ -96,12 +104,29 @@ export default class BaseUI extends cc.Component {
         Logger.info(this.name+'  start:');
     }
 
+    private updateFrame:number = 0;
+    private frameDt:number = 0;
     update(dt: number) {
         if(this.isClose){
             this.onClose();
             this.node.destroy();
             this.destroy();
         }
+
+        //修正更新
+        this.updateFrame++;
+        this.frameDt+=dt;
+        if(this.updateFrame%2==0){
+            this.fixedUpdate(this.frameDt)
+            this.frameDt = 0;
+        }
+        if(this.updateFrame>Number.MAX_VALUE){
+            this.updateFrame = 0;
+        }
+    }
+
+    fixedUpdate(dt){
+        
     }
 
     lateUpdate() {
