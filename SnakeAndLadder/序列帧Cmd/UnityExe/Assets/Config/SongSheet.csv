@@ -1,7 +1,0 @@
-﻿INDEX,Name,Res,Speed,Volume
-Number,STRING,STRING,Number,Number
-0,规则名字,音频文件名,播放速度(除以10000),声音大小(除以10000)
-0,东方红慢速,VR编钟-东方红,5000,0
-1,东方红,VR编钟-东方红,10000,0
-2,东方红快速,VR编钟-东方红,20000,0
-3,WakeMeUp,WakeMeUp,10000,10000
